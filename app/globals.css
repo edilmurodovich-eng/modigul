@@ -1,0 +1,369 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --wine: #310008;
+  --wine-light: #510b19;
+  --wine-card: #480b17;
+  --gold: #e8c47c;
+  --cream: #fff5e9;
+  --muted: #d5b9b4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  margin: 0;
+  background: var(--wine);
+  color: var(--cream);
+  font-family: 'Manrope', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.header {
+  min-height: 76px;
+  padding: 18px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(232 196 124 / 20%);
+  background: rgb(49 0 8 / 95%);
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.logo span,
+.hero h1 span,
+.catalog h2 span {
+  color: var(--gold);
+}
+
+.header-link {
+  padding: 10px 19px;
+  border: 1px solid rgb(232 196 124 / 65%);
+  border-radius: 30px;
+  color: var(--gold);
+  font-size: 13px;
+}
+
+.hero {
+  position: relative;
+  min-height: 570px;
+  padding: 75px 9% 80px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 78% 45%, #71162a 0%, transparent 38%),
+    linear-gradient(130deg, #310008, #470713 65%, #270006);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 540px;
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 4px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(58px, 7vw, 94px);
+  font-weight: 500;
+  line-height: 0.96;
+  letter-spacing: -2px;
+}
+
+.hero-description {
+  max-width: 370px;
+  margin: 25px 0 30px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.main-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 26px;
+  padding: 16px 22px;
+  border-radius: 3px;
+  background: var(--gold);
+  color: #310008;
+  font-size: 13px;
+  font-weight: 800;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.main-button:hover {
+  transform: translateY(-3px);
+  background: #f6d99a;
+}
+
+.main-button span {
+  font-size: 18px;
+}
+
+.hero-art {
+  position: relative;
+  min-height: 350px;
+  display: grid;
+  place-items: center;
+}
+
+.art-glow {
+  position: absolute;
+  width: min(340px, 85%);
+  aspect-ratio: 1;
+  border: 1px solid rgb(232 196 124 / 32%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #8a2130 0%, #54101d 48%, transparent 72%);
+  box-shadow: 0 0 90px rgb(191 45 64 / 18%);
+}
+
+.strawberry {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(130px, 20vw, 230px);
+  filter: drop-shadow(0 20px 25px rgb(0 0 0 / 30%));
+  transform: rotate(-12deg);
+}
+
+.chocolate {
+  position: absolute;
+  z-index: 2;
+  right: 8%;
+  bottom: 14%;
+  font-size: 66px;
+  transform: rotate(12deg);
+}
+
+.sparkle {
+  position: absolute;
+  color: var(--gold);
+}
+
+.sparkle-one {
+  top: 12%;
+  right: 15%;
+  font-size: 36px;
+}
+
+.sparkle-two {
+  bottom: 19%;
+  left: 8%;
+  font-size: 28px;
+}
+
+.hero-bottom {
+  position: absolute;
+  bottom: 23px;
+  left: 9%;
+  color: rgb(255 245 233 / 45%);
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+
+.catalog {
+  padding: 85px 7%;
+  background: #fff8f0;
+  color: var(--wine);
+}
+
+.catalog .eyebrow {
+  color: #9c5c45;
+  text-align: center;
+}
+
+.catalog h2 {
+  margin: 0;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 5vw, 60px);
+  font-weight: 600;
+}
+
+.catalog h2 span {
+  color: #9e2337;
+}
+
+.catalog-description {
+  margin: 12px 0 42px;
+  color: #795e59;
+  text-align: center;
+  font-size: 13px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.product-card {
+  overflow: hidden;
+  border: 1px solid #eadbd0;
+  border-radius: 5px;
+  background: #fffdf9;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 35px rgb(49 0 8 / 10%);
+}
+
+.product-art {
+  min-height: 210px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 50%, #f6d7c9, transparent 68%),
+    #f4e4d8;
+  font-size: 94px;
+}
+
+.product-info {
+  padding: 22px;
+}
+
+.product-info h3 {
+  margin: 0 0 10px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 25px;
+}
+
+.product-info p {
+  min-height: 42px;
+  margin: 0 0 18px;
+  color: #806965;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.product-info strong {
+  color: #8c2033;
+  font-size: 14px;
+}
+
+.footer {
+  padding: 35px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid rgb(232 196 124 / 20%);
+  background: #270006;
+}
+
+.footer p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+  .header {
+    min-height: 66px;
+    padding: 14px 6%;
+  }
+
+  .logo {
+    font-size: 28px;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 60px 7% 75px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .hero h1 {
+    font-size: clamp(60px, 15vw, 82px);
+  }
+
+  .hero-description {
+    max-width: 320px;
+  }
+
+  .hero-art {
+    min-height: 270px;
+  }
+
+  .strawberry {
+    font-size: 170px;
+  }
+
+  .art-glow {
+    width: 250px;
+  }
+
+  .chocolate {
+    right: 15%;
+    bottom: 10%;
+    font-size: 48px;
+  }
+
+  .hero-bottom {
+    left: 7%;
+    font-size: 8px;
+  }
+
+  .catalog {
+    padding: 60px 6%;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .product-art {
+    min-height: 190px;
+  }
+
+  .product-info p {
+    min-height: auto;
+  }
+
+  .footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
