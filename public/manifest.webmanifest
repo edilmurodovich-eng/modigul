@@ -1,7 +1,7 @@
 
 {
   "id": "/",
-  "name": "Qulupnay.uz — Магазин десертов",
+  "name": "Qulupnay.uz",
   "short_name": "Qulupnay",
   "description": "Клубника в шоколаде и премиальные десерты",
   "lang": "ru",
@@ -13,19 +13,19 @@
   "theme_color": "#310008",
   "icons": [
     {
-      "src": "/icon-192",
+      "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-512",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-512",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
