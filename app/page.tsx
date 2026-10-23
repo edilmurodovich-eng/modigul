@@ -153,24 +153,20 @@ export default function Home() {
   return (
     <main>
       <header className="header">
-        <a className="brand" href="#" aria-label="Qulupnay.uz — главная">
-  <span className="brand-mark">Q</span>
-  <span className="brand-copy">
-    <strong>Qulupnay.uz</strong>
-    <small>BAKERY</small>
-  </span>
-</a>
+  <a className="brand" href="#" aria-label="Qulupnay.uz — главная">
+    <span className="brand-mark">Q</span>
+    <span className="brand-copy">
+      <strong>Qulupnay.uz</strong>
+      <small>BAKERY</small>
+    </span>
+  </a>
 
-        <nav className="navigation" aria-label="Главная навигация">
-          <a href="#catalog">Каталог</a>
-          <a href="#about">О нас</a>
-          <a href="#order">Заказать</a>
-        </nav>
-
-        <a className="header-cart" href="#order">
-          Корзина <span>{itemCount}</span>
-        </a>
-      </header>
+  <nav className="navigation" aria-label="Главная навигация">
+    <a href="#catalog">Каталог</a>
+    <a href="#about">О нас</a>
+    <a href="#order">Корзина ({itemCount})</a>
+  </nav>
+</header>
 
       <section className="hero">
         <div className="hero-content">
