@@ -450,7 +450,7 @@ const formatPhone = (value: string) => {
               required
             />
 
-            <        <div className="phone-field">
+            <div className="phone-field">
           <label htmlFor="customer-phone">Номер телефона</label>
           <div className="phone-row">
             <div className="phone-country">
