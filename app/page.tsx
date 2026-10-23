@@ -464,7 +464,8 @@ export default function Home() {
 
     <span className="delivery-text">
       <strong>Доставка</strong>
-      <small>Доставим заказ по вашему адресу</small>
+      
+      <small> (Доставим заказ по вашему адресу)</small>
     </span>
 
     <span className="delivery-check" aria-hidden="true">
@@ -489,7 +490,8 @@ export default function Home() {
 
     <span className="delivery-text">
       <strong>Самовывоз</strong>
-      <small>Вы заберёте заказ самостоятельно</small>
+      
+      <small> (Вы заберёте заказ самостоятельно)</small>
     </span>
 
     <span className="delivery-check" aria-hidden="true">
