@@ -1346,3 +1346,76 @@ button {
   font-size: 12px;
   line-height: 1.5;
 }
+/* Поле телефона Qulupnay.uz */
+.phone-field {
+display: flex;
+flex-direction: column;
+gap: 8px;
+width: 100%;
+}
+
+.phone-row {
+display: flex;
+align-items: stretch;
+gap: 10px;
+width: 100%;
+}
+
+.phone-country {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 7px;
+flex-shrink: 0;
+padding: 0 12px;
+border: 1px solid #dfd2c5;
+border-radius: 12px;
+background: #f7eee5;
+}
+
+.phone-flag {
+font-size: 22px;
+line-height: 1;
+}
+
+.phone-code {
+color: #68462f;
+font-size: 16px;
+font-weight: 600;
+}
+
+.phone-input {
+flex: 1;
+width: 0;
+min-width: 0;
+height: 52px;
+padding: 0 12px;
+border: 1px solid #dfd2c5;
+border-radius: 12px;
+outline: none;
+background: #fffdf9;
+color: #38291f;
+font-family: inherit;
+font-size: 16px;
+letter-spacing: 0.3px;
+}
+
+.phone-input:focus {
+border-color: #79543b;
+box-shadow: 0 0 0 3px rgba(121, 84, 59, 0.12);
+}
+
+.phone-input::placeholder {
+color: #b3a396;
+opacity: 1;
+}
+
+.phone-hint {
+color: #806e60;
+font-size: 12px;
+line-height: 1.5;
+}
+
+.phone-row .phone-input {
+margin: 0;
+}
