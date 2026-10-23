@@ -221,8 +221,6 @@ export default function Home() {
           <div className="hero-number">01 / SWEET COLLECTION</div>
         </div>
 
-        <span className="hero-decoration decoration-one">✳</span>
-        <span className="hero-decoration decoration-two">✳</span>
       </section>
 
       <section className="intro-strip" id="about">
