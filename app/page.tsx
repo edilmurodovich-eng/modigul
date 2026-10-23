@@ -13,6 +13,9 @@ type Product = {
   label: string;
 };
 
+type Delivery = "delivery" | "pickup";
+type Payment = "cash" | "card" | "transfer";
+
 const products: Product[] = [
   {
     id: 1,
@@ -46,16 +49,21 @@ const products: Product[] = [
   },
 ];
 
-type Delivery = "delivery" | "pickup";
-
 const money = (value: number) =>
   new Intl.NumberFormat("ru-RU").format(value) + " сум";
+
+const paymentLabels: Record<Payment, string> = {
+  cash: "Наличными при получении",
+  card: "Картой при получении",
+  transfer: "Перевод на карту",
+};
 
 export default function Home() {
   const [cart, setCart] = useState<Record<number, number>>({});
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [delivery, setDelivery] = useState<Delivery>("delivery");
+  const [payment, setPayment] = useState<Payment>("cash");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [message, setMessage] = useState("");
@@ -64,7 +72,6 @@ export default function Home() {
   const formatPhone = (value: string) => {
     let digits = value.replace(/\D/g, "");
 
-    // Позволяет вставить номер вместе с кодом +998.
     if (digits.startsWith("998")) {
       digits = digits.slice(3);
     }
@@ -131,6 +138,13 @@ export default function Home() {
       return;
     }
 
+    const cleanPhone = phone.replace(/\D/g, "");
+
+    if (cleanPhone.length !== 9) {
+      setMessage("Введите корректный номер телефона: 9 цифр после +998.");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -139,8 +153,10 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
-          phone,
+          phone: cleanPhone,
           delivery,
+          payment,
+          paymentLabel: paymentLabels[payment],
           address: delivery === "delivery" ? address : "",
           comment,
           items: cartItems.map((item) => ({
@@ -163,6 +179,7 @@ export default function Home() {
       setName("");
       setPhone("");
       setDelivery("delivery");
+      setPayment("cash");
       setAddress("");
       setComment("");
       setMessage("Заказ отправлен! Мы свяжемся с вами для подтверждения.");
@@ -176,11 +193,7 @@ export default function Home() {
   return (
     <main>
       <header className="header">
-        <a
-          className="brand"
-          href="#"
-          aria-label="Qulupnay.uz — главная"
-        >
+        <a className="brand" href="#" aria-label="Qulupnay.uz — главная">
           <span className="brand-copy">
             <strong>Qulupnay.uz</strong>
             <small>
@@ -328,7 +341,7 @@ export default function Home() {
         </div>
       </section>
 
-     <section className="checkout section" id="order">
+      <section className="checkout section" id="order">
         <div className="section-heading checkout-heading">
           <div>
             <p className="eyebrow">ВАШИ ЛЮБИМЫЕ ДЕСЕРТЫ</p>
@@ -411,6 +424,7 @@ export default function Home() {
 
           <form className="order-form" onSubmit={submitOrder}>
             <h3>Данные для заказа</h3>
+
             <p className="form-intro">
               Заполните поля, чтобы мы могли с вами связаться.
             </p>
@@ -541,6 +555,93 @@ export default function Home() {
                 />
               </>
             )}
+
+            <div className="payment-section">
+              <span className="field-label">Способ оплаты</span>
+
+              <div className="payment-options">
+                <label
+                  className={`payment-choice ${
+                    payment === "cash" ? "selected" : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="cash"
+                    checked={payment === "cash"}
+                    onChange={() => setPayment("cash")}
+                  />
+
+                  <span className="payment-icon" aria-hidden="true">
+                    💵
+                  </span>
+
+                  <span className="payment-text">
+                    <strong>Наличными</strong>
+                    <small>При получении заказа</small>
+                  </span>
+
+                  <span className="delivery-check" aria-hidden="true">
+                    {payment === "cash" ? "✓" : ""}
+                  </span>
+                </label>
+
+                <label
+                  className={`payment-choice ${
+                    payment === "card" ? "selected" : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="card"
+                    checked={payment === "card"}
+                    onChange={() => setPayment("card")}
+                  />
+
+                  <span className="payment-icon" aria-hidden="true">
+                    💳
+                  </span>
+
+                  <span className="payment-text">
+                    <strong>Картой при получении</strong>
+                    <small>При наличии терминала</small>
+                  </span>
+
+                  <span className="delivery-check" aria-hidden="true">
+                    {payment === "card" ? "✓" : ""}
+                  </span>
+                </label>
+
+                <label
+                  className={`payment-choice ${
+                    payment === "transfer" ? "selected" : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="transfer"
+                    checked={payment === "transfer"}
+                    onChange={() => setPayment("transfer")}
+                  />
+
+                  <span className="payment-icon" aria-hidden="true">
+                    📱
+                  </span>
+
+                  <span className="payment-text">
+                    <strong>Перевод на карту</strong>
+                    <small>Реквизиты уточним при подтверждении</small>
+                  </span>
+
+                  <span className="delivery-check" aria-hidden="true">
+                    {payment === "transfer" ? "✓" : ""}
+                  </span>
+                </label>
+              </div>
+            </div>
 
             <label htmlFor="customer-comment">
               Комментарий <span className="optional">(необязательно)</span>
