@@ -1106,3 +1106,66 @@ button {
     display: none !important;
   }
 }
+/* Контрастный счётчик количества */
+.quantity-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-height: 44px;
+  overflow: hidden;
+  background: #fffaf3;
+  border: 1px solid #d8c4ae;
+  border-radius: 10px;
+}
+
+.quantity-control button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  background: #ead8c4;
+  color: #42251e;
+  border: 0;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.quantity-control button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity-control span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  padding: 0 8px;
+  color: #321b16 !important;
+  background: #fffaf3 !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.add-button {
+  min-height: 44px;
+  color: #fffaf3;
+  background: #512b24;
+  border: 1px solid #512b24;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.add-button span {
+  color: inherit;
+}
