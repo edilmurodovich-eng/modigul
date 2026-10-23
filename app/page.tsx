@@ -1,5 +1,6 @@
 
 
+"
 "use client";
 
 import { useState } from "react";
@@ -34,15 +35,104 @@ const products = [
   },
 ];
 
-function money(value: number) {
-  return new Intl.NumberFormat("ru-RU").format(value) + " сум";
-}
+const money = (value: number) =>
+  new Intl.NumberFormat("ru-RU").format(value) + " сум";
 
 export default function Home() {
-  const [cart, setCart] = useState<number[]>([]);
+  const [cart, setCart] = useState<Record<number, number>>({});
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [delivery, setDelivery] = useState<"delivery" | "pickup">("delivery");
+  const [address, setAddress] = useState("");
+  const [comment, setComment] = useState("");
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  function addToCart(id: number) {
-    setCart((current) => [...current, id]);
+  const cartItems = products
+    .filter((product) => (cart[product.id] ?? 0) > 0)
+    .map((product) => ({
+      ...product,
+      quantity: cart[product.id],
+    }));
+
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  const itemCount = cartItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
+  function changeQuantity(id: number, delta: number) {
+    setCart((current) => {
+      const next = { ...current };
+      const quantity = (next[id] ?? 0) + delta;
+
+      if (quantity <= 0) {
+        delete next[id];
+      } else {
+        next[id] = Math.min(quantity, 50);
+      }
+
+      return next;
+    });
+
+    setMessage("");
+  }
+
+  async function submitOrder(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setMessage("");
+
+    if (itemCount === 0) {
+      setMessage("Сначала добавьте товар в корзину.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const response = await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          phone,
+          delivery,
+          address: delivery === "delivery" ? address : "",
+          comment,
+          items: cartItems.map((item) => ({
+            id: item.id,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        setMessage(result.error ?? "Не удалось отправить заказ.");
+        return;
+      }
+
+      setMessage(
+        "Заказ отправлен! Мы свяжемся с вами для подтверждения."
+      );
+      setCart({});
+      setName("");
+      setPhone("");
+      setAddress("");
+      setComment("");
+      setDelivery("delivery");
+    } catch {
+      setMessage(
+        "Не удалось связаться с сервером. Проверьте интернет и попробуйте ещё раз."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -59,11 +149,11 @@ export default function Home() {
         <nav>
           <a href="#">Главная</a>
           <a href="#catalog">Каталог</a>
-          <a href="#about">О нас</a>
+          <a href="#checkout">Заказ</a>
         </nav>
 
-        <a className="cart-link" href="#catalog">
-          ♧ <span>{cart.length}</span>
+        <a className="cart-link" href="#checkout" aria-label={`Корзина, ${itemCount} товаров`}>
+          ♧ <span>{itemCount}</span>
         </a>
       </header>
 
@@ -131,7 +221,11 @@ export default function Home() {
           {products.map((product) => (
             <article className="product-card" key={product.id}>
               <div className="product-image">
-                <img src={product.image} alt={product.name} loading="lazy" />
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  loading="lazy"
+                />
                 <span className="product-tag">{product.tag}</span>
               </div>
               <div className="product-info">
@@ -139,41 +233,187 @@ export default function Home() {
                 <p>{product.description}</p>
                 <strong>{money(product.price)}</strong>
                 <button
+                  type="button"
                   className="gold-button add-button"
-                  onClick={() => addToCart(product.id)}
+                  disabled={(cart[product.id] ?? 0) >= 50}
+                  onClick={() => changeQuantity(product.id, 1)}
                 >
                   Добавить в корзину <span>＋</span>
                 </button>
+                {(cart[product.id] ?? 0) > 0 && (
+                  <div className="quantity-control">
+                    <button
+                      type="button"
+                      aria-label="Уменьшить количество"
+                      onClick={() => changeQuantity(product.id, -1)}
+                    >
+                      −
+                    </button>
+                    <span>{cart[product.id]}</span>
+                    <button
+                      type="button"
+                      aria-label="Увеличить количество"
+                      disabled={cart[product.id] >= 50}
+                      onClick={() => changeQuantity(product.id, 1)}
+                    >
+                      +
+                    </button>
+                  </div>
+                )}
               </div>
             </article>
           ))}
         </div>
-
-        <p className="cart-summary">
-          В корзине наборов: <strong>{cart.length}</strong>
-          {cart.length > 0 && (
-            <> · На сумму: <strong>
-              {money(
-                cart.reduce(
-                  (sum, id) =>
-                    sum + (products.find((p) => p.id === id)?.price ?? 0),
-                  0
-                )
-              )}
-            </strong></>
-          )}
-        </p>
       </section>
 
-      <section className="closing">
-        <div>
-          <p className="eyebrow">ПОДАРИТЕ ЭМОЦИИ</p>
-          <h2>Закажите <span>сейчас</span></h2>
-          <p>Сладкие моменты начинаются с Qulupnay.uz.</p>
+      <section className="checkout" id="checkout">
+        <p className="eyebrow">ВАШ ЗАКАЗ</p>
+        <h2>Оформление <span>заказа</span></h2>
+
+        <div className="checkout-layout">
+          <div className="checkout-cart">
+            <h3>Корзина</h3>
+
+            {cartItems.length === 0 ? (
+              <p className="empty-cart">
+                Корзина пока пуста. Выберите набор в каталоге.
+              </p>
+            ) : (
+              <>
+                {cartItems.map((item) => (
+                  <div className="checkout-item" key={item.id}>
+                    <div>
+                      <strong>{item.name}</strong>
+                      <p>{money(item.price)} за набор</p>
+                    </div>
+                    <div className="quantity-control">
+                      <button
+                        type="button"
+                        aria-label={`Уменьшить ${item.name}`}
+                        onClick={() => changeQuantity(item.id, -1)}
+                      >
+                        −
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button
+                        type="button"
+                        aria-label={`Увеличить ${item.name}`}
+                        disabled={item.quantity >= 50}
+                        onClick={() => changeQuantity(item.id, 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="checkout-total">
+                  <span>Итого</span>
+                  <strong>{money(total)}</strong>
+                </div>
+              </>
+            )}
+          </div>
+
+          <form className="order-form" onSubmit={submitOrder}>
+            <h3>Контактные данные</h3>
+
+            <label htmlFor="customer-name">Ваше имя</label>
+            <input
+              id="customer-name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              minLength={2}
+              maxLength={80}
+              autoComplete="name"
+              required
+              placeholder="Как к вам обращаться?"
+            />
+
+            <label htmlFor="customer-phone">Телефон</label>
+            <input
+              id="customer-phone"
+              type="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              minLength={7}
+              maxLength={25}
+              autoComplete="tel"
+              required
+              placeholder="+998 90 123 45 67"
+            />
+
+            <label>Как получить заказ?</label>
+            <div className="delivery-options">
+              <label className="delivery-choice">
+                <input
+                  type="radio"
+                  name="delivery"
+                  checked={delivery === "delivery"}
+                  onChange={() => setDelivery("delivery")}
+                />
+                <span>🚚 Доставка</span>
+              </label>
+              <label className="delivery-choice">
+                <input
+                  type="radio"
+                  name="delivery"
+                  checked={delivery === "pickup"}
+                  onChange={() => setDelivery("pickup")}
+                />
+                <span>🏪 Самовывоз</span>
+              </label>
+            </div>
+
+            {delivery === "delivery" && (
+              <>
+                <label htmlFor="customer-address">Адрес доставки</label>
+                <textarea
+                  id="customer-address"
+                  value={address}
+                  onChange={(event) => setAddress(event.target.value)}
+                  minLength={5}
+                  maxLength={300}
+                  required
+                  placeholder="Город, улица, дом, ориентир"
+                  rows={3}
+                />
+              </>
+            )}
+
+            <label htmlFor="customer-comment">
+              Комментарий к заказу (необязательно)
+            </label>
+            <textarea
+              id="customer-comment"
+              value={comment}
+              onChange={(event) => setComment(event.target.value)}
+              maxLength={500}
+              placeholder="Удобное время или пожелания"
+              rows={3}
+            />
+
+            <button
+              className="gold-button submit-button"
+              type="submit"
+              disabled={submitting || itemCount === 0}
+            >
+              {submitting ? "Отправляем..." : "Отправить заказ в Telegram"}
+              {!submitting && <span>→</span>}
+            </button>
+
+            {message && (
+              <p className="order-message" role="status" aria-live="polite">
+                {message}
+              </p>
+            )}
+
+            <p className="form-note">
+              После отправки магазин свяжется с вами для подтверждения
+              заказа, стоимости доставки и времени получения.
+            </p>
+          </form>
         </div>
-        <a className="gold-button" href="#catalog">
-          Перейти в каталог <span>→</span>
-        </a>
       </section>
 
       <footer className="site-footer">
