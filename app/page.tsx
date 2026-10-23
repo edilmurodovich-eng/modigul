@@ -1,38 +1,52 @@
 
-
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-const products = [
+type Product = {
+  id: number;
+  name: string;
+  category: string;
+  description: string;
+  price: number;
+  image: string;
+  label: string;
+};
+
+const products: Product[] = [
   {
     id: 1,
-    name: "Классика",
-    description: "6 ягод в шоколаде",
-    price: 120000,
+    name: "Авторский торт",
+    category: "ТОРТЫ",
+    description: "Нежный крем, воздушный бисквит и изысканное оформление.",
+    price: 180000,
     image:
-      "https://images.unsplash.com/photo-1546039907-7fa05f864c02?auto=format&fit=crop&w=800&q=85",
-    tag: "БЕСТСЕЛЛЕР",
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1000&q=85",
+    label: "Хит продаж",
   },
   {
     id: 2,
-    name: "Премиум",
-    description: "9 ягод в шоколаде",
-    price: 180000,
+    name: "Нежные пирожные",
+    category: "ПИРОЖНЫЕ",
+    description: "Идеальное дополнение к кофе и красивому вечеру.",
+    price: 65000,
     image:
-      "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=800&q=85",
-    tag: "ПОПУЛЯРНЫЙ",
+      "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1000&q=85",
+    label: "Нежный вкус",
   },
   {
     id: 3,
-    name: "VIP",
-    description: "12 ягод в шоколаде",
-    price: 230000,
+    name: "Домашнее печенье",
+    category: "ПЕЧЕНЬЕ И ВЫПЕЧКА",
+    description: "Румяная выпечка для тёплых встреч и уютных моментов.",
+    price: 45000,
     image:
-      "https://images.unsplash.com/photo-1481391319762-47dff72954d9?auto=format&fit=crop&w=800&q=85",
-    tag: "ПОДАРОК",
+      "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1000&q=85",
+    label: "Свежая выпечка",
   },
 ];
+
+type Delivery = "delivery" | "pickup";
 
 const money = (value: number) =>
   new Intl.NumberFormat("ru-RU").format(value) + " сум";
@@ -41,18 +55,22 @@ export default function Home() {
   const [cart, setCart] = useState<Record<number, number>>({});
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [delivery, setDelivery] = useState<"delivery" | "pickup">("delivery");
+  const [delivery, setDelivery] = useState<Delivery>("delivery");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const cartItems = products
-    .filter((product) => (cart[product.id] ?? 0) > 0)
-    .map((product) => ({
-      ...product,
-      quantity: cart[product.id],
-    }));
+  const cartItems = useMemo(
+    () =>
+      products
+        .filter((product) => (cart[product.id] ?? 0) > 0)
+        .map((product) => ({
+          ...product,
+          quantity: cart[product.id],
+        })),
+    [cart]
+  );
 
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -64,18 +82,18 @@ export default function Home() {
     0
   );
 
-  function changeQuantity(id: number, delta: number) {
+  function changeQuantity(id: number, change: number) {
     setCart((current) => {
-      const next = { ...current };
-      const quantity = (next[id] ?? 0) + delta;
+      const next = (current[id] ?? 0) + change;
+      const updated = { ...current };
 
-      if (quantity <= 0) {
-        delete next[id];
-      } else {
-        next[id] = Math.min(quantity, 50);
+      if (next <= 0) {
+        delete updated[id];
+      } else if (next <= 50) {
+        updated[id] = next;
       }
 
-      return next;
+      return updated;
     });
 
     setMessage("");
@@ -85,8 +103,8 @@ export default function Home() {
     event.preventDefault();
     setMessage("");
 
-    if (itemCount === 0) {
-      setMessage("Сначала добавьте товар в корзину.");
+    if (cartItems.length === 0) {
+      setMessage("Сначала добавьте товары в корзину.");
       return;
     }
 
@@ -112,23 +130,21 @@ export default function Home() {
       const result = await response.json();
 
       if (!response.ok || !result.ok) {
-        setMessage(result.error ?? "Не удалось отправить заказ.");
+        setMessage(
+          result.error || "Не удалось оформить заказ. Попробуйте ещё раз."
+        );
         return;
       }
 
-      setMessage(
-        "Заказ отправлен! Мы свяжемся с вами для подтверждения."
-      );
       setCart({});
       setName("");
       setPhone("");
+      setDelivery("delivery");
       setAddress("");
       setComment("");
-      setDelivery("delivery");
+      setMessage("Заказ отправлен! Мы свяжемся с вами для подтверждения.");
     } catch {
-      setMessage(
-        "Не удалось связаться с сервером. Проверьте интернет и попробуйте ещё раз."
-      );
+      setMessage("Не удалось связаться с сервером. Попробуйте ещё раз.");
     } finally {
       setSubmitting(false);
     }
@@ -136,213 +152,293 @@ export default function Home() {
 
   return (
     <main>
-      <header className="site-header">
-        <a className="brand" href="#">
-          <span className="brand-icon">✿</span>
-          <span>
-            Qulupnay<span className="gold">.uz</span>
-            <small>Клубника в шоколаде</small>
+      <header className="header">
+        <a className="brand" href="#" aria-label="Qulupnay — главная">
+          <span className="brand-mark">Q</span>
+          <span className="brand-copy">
+            <strong>qulupnay</strong>
+            <small>КОНДИТЕРСКАЯ</small>
           </span>
         </a>
 
-        <nav>
-          <a href="#">Главная</a>
+        <nav className="navigation" aria-label="Главная навигация">
           <a href="#catalog">Каталог</a>
-          <a href="#checkout">Заказ</a>
+          <a href="#about">О нас</a>
+          <a href="#order">Заказать</a>
         </nav>
 
-        <a className="cart-link" href="#checkout" aria-label={`Корзина, ${itemCount} товаров`}>
-          ♧ <span>{itemCount}</span>
+        <a className="header-cart" href="#order">
+          Корзина <span>{itemCount}</span>
         </a>
       </header>
 
       <section className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">НАТУРАЛЬНАЯ КЛУБНИКА · ПРЕМИУМ КАЧЕСТВО</p>
-          <h1>
-            Клубника
-            <br />
-            в <span>шоколаде</span>
-          </h1>
-          <p className="hero-text">
-            Идеальное сочетание свежести, вкуса и эстетики.
-            Подарите близким незабываемые сладкие моменты.
+        <div className="hero-content">
+          <p className="eyebrow">
+            <span /> СЛАДКИЕ МОМЕНТЫ КАЖДЫЙ ДЕНЬ
           </p>
-          <a className="gold-button" href="#catalog">
-            Выбрать набор <span>→</span>
-          </a>
-          <div className="hero-note">СДЕЛАНО С ЛЮБОВЬЮ · QULUPNAY.UZ</div>
-        </div>
 
-        <div className="hero-photo">
-          <img
-            src="https://images.unsplash.com/photo-1481391319762-47dff72954d9?auto=format&fit=crop&w=1200&q=90"
-            alt="Премиальные сладости и шоколад"
-          />
-          <div className="photo-caption">
-            <span>МАЛЕНЬКАЯ РОСКОШЬ</span>
-            <strong>В каждом кусочке</strong>
+          <h1>
+            Искусство
+            <br />
+            <em>быть сладким.</em>
+          </h1>
+
+          <p className="hero-description">
+            Торты, нежные пирожные и свежая выпечка, созданные для ваших
+            особенных моментов.
+          </p>
+
+          <div className="hero-actions">
+            <a className="button button-dark" href="#catalog">
+              Выбрать десерт <span>↗</span>
+            </a>
+            <a className="text-link" href="#about">
+              Наша философия
+            </a>
+          </div>
+
+          <div className="hero-note">
+            <span className="note-line" />
+            С ЛЮБОВЬЮ К КАЖДОЙ ДЕТАЛИ
           </div>
         </div>
+
+        <div className="hero-visual">
+          <div className="hero-photo-frame">
+            <img
+              className="hero-photo"
+              src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=90"
+              alt="Красивый праздничный торт"
+              fetchPriority="high"
+            />
+          </div>
+          <div className="photo-stamp">
+            <span>Сделано</span>
+            <strong>с любовью</strong>
+            <span>для вас ♡</span>
+          </div>
+          <div className="hero-number">01 / SWEET COLLECTION</div>
+        </div>
+
+        <span className="hero-decoration decoration-one">✳</span>
+        <span className="hero-decoration decoration-two">✳</span>
       </section>
 
-      <section className="benefits" id="about">
-        <article>
-          <span>✧</span>
-          <h3>Свежие ягоды</h3>
-          <p>Отборная клубника</p>
-        </article>
-        <article>
-          <span>◇</span>
-          <h3>Премиум шоколад</h3>
-          <p>Насыщенный вкус</p>
-        </article>
-        <article>
-          <span>♧</span>
-          <h3>Бережная доставка</h3>
-          <p>По согласованию заказа</p>
-        </article>
-        <article>
-          <span>♡</span>
-          <h3>С заботой</h3>
-          <p>Каждый заказ особенный</p>
-        </article>
+      <section className="intro-strip" id="about">
+        <p>НЕ ПРОСТО ДЕСЕРТЫ</p>
+        <span>✳</span>
+        <p>МАЛЕНЬКИЕ ПОВОДЫ ДЛЯ СЧАСТЬЯ</p>
+        <span>✳</span>
+        <p>ВАШИ ОСОБЕННЫЕ МОМЕНТЫ</p>
       </section>
 
-      <section className="catalog" id="catalog">
-        <p className="eyebrow">ВАШИ СЛАДКИЕ МОМЕНТЫ</p>
-        <h2>Популярные <span>наборы</span></h2>
-        <p className="section-description">
-          Выберите подарок, который скажет больше слов.
-        </p>
+      <section className="catalog section" id="catalog">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">ВЫБЕРИТЕ СВОЁ НАСТРОЕНИЕ</p>
+            <h2>
+              Наша сладкая <em>коллекция</em>
+            </h2>
+          </div>
+          <p className="section-description">
+            Вкусные детали, которые делают обычный день особенным.
+          </p>
+        </div>
 
         <div className="product-grid">
-          {products.map((product) => (
+          {products.map((product, index) => (
             <article className="product-card" key={product.id}>
-              <div className="product-image">
+              <div className="product-image-wrap">
                 <img
+                  className="product-image"
                   src={product.image}
                   alt={product.name}
                   loading="lazy"
                 />
-                <span className="product-tag">{product.tag}</span>
+                <span className="product-label">{product.label}</span>
+                <span className="product-index">
+                  0{index + 1}
+                </span>
               </div>
+
               <div className="product-info">
+                <p className="product-category">{product.category}</p>
                 <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <strong>{money(product.price)}</strong>
-                <button
-                  type="button"
-                  className="gold-button add-button"
-                  disabled={(cart[product.id] ?? 0) >= 50}
-                  onClick={() => changeQuantity(product.id, 1)}
-                >
-                  Добавить в корзину <span>＋</span>
-                </button>
-                {(cart[product.id] ?? 0) > 0 && (
-                  <div className="quantity-control">
+                <p className="product-description">{product.description}</p>
+
+                <div className="product-bottom">
+                  <strong className="product-price">
+                    {money(product.price)}
+                  </strong>
+
+                  {(cart[product.id] ?? 0) === 0 ? (
                     <button
+                      className="add-button"
                       type="button"
-                      aria-label="Уменьшить количество"
-                      onClick={() => changeQuantity(product.id, -1)}
-                    >
-                      −
-                    </button>
-                    <span>{cart[product.id]}</span>
-                    <button
-                      type="button"
-                      aria-label="Увеличить количество"
-                      disabled={cart[product.id] >= 50}
                       onClick={() => changeQuantity(product.id, 1)}
+                      aria-label={`Добавить ${product.name} в корзину`}
                     >
-                      +
+                      <span>+</span> Добавить
                     </button>
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="checkout" id="checkout">
-        <p className="eyebrow">ВАШ ЗАКАЗ</p>
-        <h2>Оформление <span>заказа</span></h2>
-
-        <div className="checkout-layout">
-          <div className="checkout-cart">
-            <h3>Корзина</h3>
-
-            {cartItems.length === 0 ? (
-              <p className="empty-cart">
-                Корзина пока пуста. Выберите набор в каталоге.
-              </p>
-            ) : (
-              <>
-                {cartItems.map((item) => (
-                  <div className="checkout-item" key={item.id}>
-                    <div>
-                      <strong>{item.name}</strong>
-                      <p>{money(item.price)} за набор</p>
-                    </div>
+                  ) : (
                     <div className="quantity-control">
                       <button
                         type="button"
-                        aria-label={`Уменьшить ${item.name}`}
-                        onClick={() => changeQuantity(item.id, -1)}
+                        onClick={() => changeQuantity(product.id, -1)}
+                        aria-label="Уменьшить количество"
                       >
                         −
                       </button>
-                      <span>{item.quantity}</span>
+                      <span>{cart[product.id]}</span>
                       <button
                         type="button"
-                        aria-label={`Увеличить ${item.name}`}
-                        disabled={item.quantity >= 50}
-                        onClick={() => changeQuantity(item.id, 1)}
+                        onClick={() => changeQuantity(product.id, 1)}
+                        disabled={cart[product.id] >= 50}
+                        aria-label="Увеличить количество"
                       >
                         +
                       </button>
                     </div>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <p className="catalog-footnote">
+          * Ассортимент и цены можно изменить под ваше меню.
+        </p>
+      </section>
+
+      <section className="promise">
+        <div className="promise-inner">
+          <span className="promise-symbol">✳</span>
+          <div>
+            <p className="eyebrow">ФИЛОСОФИЯ QULUPNAY</p>
+            <h2>
+              Красота в деталях.
+              <br />
+              <em>Счастье — во вкусе.</em>
+            </h2>
+          </div>
+          <p className="promise-copy">
+            От уютного чаепития до большого праздника — пусть у каждого
+            момента будет свой сладкий вкус.
+          </p>
+        </div>
+      </section>
+
+      <section className="checkout section" id="order">
+        <div className="section-heading checkout-heading">
+          <div>
+            <p className="eyebrow">ВАШИ ЛЮБИМЫЕ ДЕСЕРТЫ</p>
+            <h2>
+              Оформить <em>заказ</em>
+            </h2>
+          </div>
+          <p className="section-description">
+            Выберите десерты и оставьте контакты. Мы свяжемся с вами для
+            подтверждения.
+          </p>
+        </div>
+
+        <div className="checkout-layout">
+          <div className="checkout-cart">
+            <div className="cart-heading">
+              <h3>Ваша корзина</h3>
+              <span>{itemCount} шт.</span>
+            </div>
+
+            {cartItems.length === 0 ? (
+              <div className="empty-cart">
+                <span className="empty-cart-icon">♡</span>
+                <p>Здесь пока пусто</p>
+                <span>Добавьте что-нибудь вкусное из каталога.</span>
+                <a href="#catalog">Перейти к десертам ↗</a>
+              </div>
+            ) : (
+              <div className="cart-items">
+                {cartItems.map((item) => (
+                  <div className="checkout-item" key={item.id}>
+                    <div className="cart-item-image">
+                      <img src={item.image} alt="" />
+                    </div>
+                    <div className="cart-item-details">
+                      <strong>{item.name}</strong>
+                      <span>{money(item.price)} / шт.</span>
+                      <div className="quantity-control cart-quantity">
+                        <button
+                          type="button"
+                          onClick={() => changeQuantity(item.id, -1)}
+                          aria-label="Уменьшить количество"
+                        >
+                          −
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() => changeQuantity(item.id, 1)}
+                          disabled={item.quantity >= 50}
+                          aria-label="Увеличить количество"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                    <strong className="cart-item-total">
+                      {money(item.price * item.quantity)}
+                    </strong>
                   </div>
                 ))}
-
-                <div className="checkout-total">
-                  <span>Итого</span>
-                  <strong>{money(total)}</strong>
-                </div>
-              </>
+              </div>
             )}
+
+            <div className="checkout-total">
+              <span>Итого за товары</span>
+              <strong>{money(total)}</strong>
+            </div>
+            <p className="cart-note">
+              Стоимость и условия доставки уточняются при подтверждении заказа.
+            </p>
           </div>
 
           <form className="order-form" onSubmit={submitOrder}>
-            <h3>Контактные данные</h3>
+            <h3>Данные для заказа</h3>
+            <p className="form-intro">
+              Заполните поля, чтобы мы могли с вами связаться.
+            </p>
 
             <label htmlFor="customer-name">Ваше имя</label>
             <input
               id="customer-name"
+              name="name"
+              autoComplete="name"
               value={name}
               onChange={(event) => setName(event.target.value)}
+              placeholder="Как к вам обращаться?"
               minLength={2}
               maxLength={80}
-              autoComplete="name"
               required
-              placeholder="Как к вам обращаться?"
             />
 
-            <label htmlFor="customer-phone">Телефон</label>
+            <label htmlFor="customer-phone">Номер телефона</label>
             <input
               id="customer-phone"
+              name="phone"
               type="tel"
+              autoComplete="tel"
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
+              placeholder="+998 90 123 45 67"
               minLength={7}
               maxLength={25}
-              autoComplete="tel"
+              pattern="[+()0-9\s-]{7,25}"
               required
-              placeholder="+998 90 123 45 67"
             />
 
-            <label>Как получить заказ?</label>
+            <span className="field-label">Как получите заказ?</span>
             <div className="delivery-options">
               <label className="delivery-choice">
                 <input
@@ -351,8 +447,12 @@ export default function Home() {
                   checked={delivery === "delivery"}
                   onChange={() => setDelivery("delivery")}
                 />
-                <span>🚚 Доставка</span>
+                <span>
+                  <strong>Доставка</strong>
+                  <small>До вашего адреса</small>
+                </span>
               </label>
+
               <label className="delivery-choice">
                 <input
                   type="radio"
@@ -360,45 +460,50 @@ export default function Home() {
                   checked={delivery === "pickup"}
                   onChange={() => setDelivery("pickup")}
                 />
-                <span>🏪 Самовывоз</span>
+                <span>
+                  <strong>Самовывоз</strong>
+                  <small>Забрать самостоятельно</small>
+                </span>
               </label>
             </div>
 
             {delivery === "delivery" && (
               <>
                 <label htmlFor="customer-address">Адрес доставки</label>
-                <textarea
+                <input
                   id="customer-address"
+                  name="address"
+                  autoComplete="street-address"
                   value={address}
                   onChange={(event) => setAddress(event.target.value)}
+                  placeholder="Улица, дом, ориентир"
                   minLength={5}
                   maxLength={300}
                   required
-                  placeholder="Город, улица, дом, ориентир"
-                  rows={3}
                 />
               </>
             )}
 
             <label htmlFor="customer-comment">
-              Комментарий к заказу (необязательно)
+              Комментарий <span className="optional">(необязательно)</span>
             </label>
             <textarea
               id="customer-comment"
+              name="comment"
               value={comment}
               onChange={(event) => setComment(event.target.value)}
-              maxLength={500}
-              placeholder="Удобное время или пожелания"
+              placeholder="Пожелания к заказу..."
               rows={3}
+              maxLength={500}
             />
 
             <button
-              className="gold-button submit-button"
+              className="button button-dark submit-button"
               type="submit"
-              disabled={submitting || itemCount === 0}
+              disabled={submitting || cartItems.length === 0}
             >
-              {submitting ? "Отправляем..." : "Отправить заказ в Telegram"}
-              {!submitting && <span>→</span>}
+              {submitting ? "Отправляем заказ..." : "Оформить заказ"}
+              {!submitting && <span>↗</span>}
             </button>
 
             {message && (
@@ -408,18 +513,27 @@ export default function Home() {
             )}
 
             <p className="form-note">
-              После отправки магазин свяжется с вами для подтверждения
-              заказа, стоимости доставки и времени получения.
+              Нажимая кнопку, вы отправляете данные, необходимые для обработки
+              заказа.
             </p>
           </form>
         </div>
       </section>
 
-      <footer className="site-footer">
-        <a className="brand" href="#">
-          Qulupnay<span className="gold">.uz</span>
+      <footer className="footer">
+        <a className="brand footer-brand" href="#">
+          <span className="brand-mark">Q</span>
+          <span className="brand-copy">
+            <strong>qulupnay</strong>
+            <small>КОНДИТЕРСКАЯ</small>
+          </span>
         </a>
-        <p>Клубника в шоколаде · С любовью к деталям</p>
+
+        <p>Сладкие моменты, созданные с любовью.</p>
+        <a href="#catalog">Каталог ↑</a>
+        <span className="footer-copyright">
+          © {new Date().getFullYear()} Qulupnay.uz
+        </span>
       </footer>
     </main>
   );
