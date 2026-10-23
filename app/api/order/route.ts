@@ -17,11 +17,19 @@ type OrderRequest = {
   items?: OrderItem[];
 };
 
-const PRODUCTS = [
-  { id: 1, name: "Классика", price: 120000 },
-  { id: 2, name: "Премиум", price: 180000 },
-  { id: 3, name: "VIP", price: 230000 },
-];
+const PRODUCTS = {
+  1: {
+    name: "Авторский торт",
+    price: 180000,
+  },
+  2: {
+    name: "Нежные пирожные",
+    price: 65000,
+  },
+  3: {
+    name: "Домашнее печенье",
+    price: 45000,
+  },
 
 const money = (value: number) =>
   new Intl.NumberFormat("ru-RU").format(value) + " сум";
