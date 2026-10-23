@@ -460,7 +460,7 @@ export default function Home() {
 
                 <span>
                   <strong>Доставка</strong>
-                  <small>Доставим заказ по вашему адресу</small>
+                  <small> (Доставим заказ по вашему адресу)</small>
                 </span>
               </label>
 
@@ -474,7 +474,7 @@ export default function Home() {
 
                 <span>
                   <strong>Самовывоз</strong>
-                  <small>Вы заберёте заказ самостоятельно</small>
+                  <small> (Вы заберёте заказ самостоятельно)</small>
                 </span>
               </label>
             </div>
