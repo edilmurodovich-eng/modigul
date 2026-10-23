@@ -191,8 +191,8 @@ export default function Home() {
 
           <div className="hero-actions">
             <a className="button button-dark" href="#catalog">
-              Выбрать десерт <span>↗</span>
-            </a>
+  Выбрать десерт
+</a>
             <a className="text-link" href="#about">
               Наша философия
             </a>
