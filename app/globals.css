@@ -1278,3 +1278,71 @@ button {
     padding: 13px;
   }
 }
+.phone-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.phone-label {
+  color: #38291f;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.phone-input-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 54px;
+  overflow: hidden;
+  border: 1px solid #dfd2c5;
+  border-radius: 12px;
+  background: #fffdf9;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.phone-input-wrapper:focus-within {
+  border-color: #79543b;
+  box-shadow: 0 0 0 3px rgba(121, 84, 59, 0.12);
+}
+
+.phone-prefix {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  padding: 0 14px;
+  border-right: 1px solid #e8ddd2;
+  background: #f7eee5;
+  color: #68462f;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.phone-input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  height: 52px;
+  padding: 0 14px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #38291f;
+  font: inherit;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+}
+
+.phone-input::placeholder {
+  color: #b3a396;
+  opacity: 1;
+}
+
+.phone-hint {
+  color: #806e60;
+  font-size: 12px;
+  line-height: 1.5;
+}
