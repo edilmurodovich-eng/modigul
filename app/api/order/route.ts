@@ -30,8 +30,10 @@ const PRODUCTS = {
     name: "Домашнее печенье",
     price: 45000,
   },
+};
 
 const money = (value: number) =>
+  new Intl.NumberFormat("ru-RU").format(value) + " сум";const money = (value: number) =>
   new Intl.NumberFormat("ru-RU").format(value) + " сум";
 
 export async function POST(request: Request) {
