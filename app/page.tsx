@@ -450,20 +450,39 @@ const formatPhone = (value: string) => {
               required
             />
 
-            <label htmlFor="customer-phone">Номер телефона</label>
+            <        <div className="phone-field">
+          <label htmlFor="customer-phone">Номер телефона</label>
+          <div className="phone-row">
+            <div className="phone-country">
+              <span className="phone-flag">🇺🇿</span>
+              <span className="phone-code">+998</span>
+            </div>
             <input
               id="customer-phone"
+              className="phone-input"
               name="phone"
               type="tel"
-              autoComplete="tel"
-              value={phone}
-              onChange={(event) => setPhone(event.target.value)}
-              placeholder="+998 90 123 45 67"
-              minLength={7}
-              maxLength={25}
-              pattern="[+()0-9\s-]{7,25}"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              value={formatPhone(phone)}
+              onChange={(event) => {
+                let digits = event.target.value.replace(/\D/g, "");
+                if (digits.startsWith("998")) {
+                  digits = digits.slice(3);
+                }
+                setPhone(digits.slice(0, 9));
+              }}
+              placeholder="90 123-45-67"
+              maxLength={12}
+              pattern="[0-9]{2} [0-9]{3}-[0-9]{2}-[0-9]{2}"
+              title="Введите 9 цифр номера телефона"
               required
             />
+          </div>
+          <small className="phone-hint">
+            Введите 9 цифр номера после +998
+          </small>
+        </div>
 
             <span className="field-label">Как получите заказ?</span>
 
