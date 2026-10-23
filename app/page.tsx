@@ -56,7 +56,6 @@ export default function Home() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [delivery, setDelivery] = useState<Delivery>("delivery");
-  const [payment, setPayment] = useState<"cash" | "card" | "transfer">("cash");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [message, setMessage] = useState("");
