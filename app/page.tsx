@@ -55,6 +55,27 @@ export default function Home() {
   const [cart, setCart] = useState<Record<number, number>>({});
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+
+const formatPhone = (value: string) => {
+  let digits = value.replace(/\D/g, "");
+
+  // Позволяет вставить номер даже вместе с кодом +998
+  if (digits.startsWith("998")) {
+    digits = digits.slice(3);
+  }
+
+  digits = digits.slice(0, 9);
+
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 5) {
+    return `${digits.slice(0, 2)} ${digits.slice(2)}`;
+  }
+  if (digits.length <= 7) {
+    return `${digits.slice(0, 2)} ${digits.slice(2, 5)}-${digits.slice(5)}`;
+  }
+
+  return `${digits.slice(0, 2)} ${digits.slice(2, 5)}-${digits.slice(5, 7)}-${digits.slice(7, 9)}`;
+};
   const [delivery, setDelivery] = useState<Delivery>("delivery");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
