@@ -1027,3 +1027,82 @@ button {
     animation: none !important;
   }
 }
+/* Исправление фотографий десертов */
+.hero-photo-frame {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 180px 180px 12px 12px;
+}
+
+.hero-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.product-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #f2e6d8;
+  border-radius: 12px;
+}
+
+.product-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Вертикальный экран телефона */
+@media (max-width: 600px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-visual {
+    width: 100%;
+    min-width: 0;
+    margin: 24px auto 0;
+  }
+
+  .hero-photo-frame {
+    width: 100%;
+    height: 360px;
+    border-radius: 160px 160px 12px 12px;
+  }
+
+  .hero-photo {
+    object-position: center 45%;
+  }
+
+  .photo-stamp {
+    max-width: 145px;
+  }
+
+  .product-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .product-image-wrap {
+    aspect-ratio: 4 / 3;
+  }
+
+  .product-image {
+    object-position: center;
+  }
+
+  .hero-decoration {
+    display: none !important;
+  }
+
+  .hero-actions .button span {
+    display: none !important;
+  }
+}
