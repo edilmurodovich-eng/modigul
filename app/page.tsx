@@ -197,14 +197,12 @@ export default function Home() {
             особенных моментов.
           </p>
 
-          <div className="hero-actions">
-            <a className="button button-dark" href="#catalog">
-              Выбрать десерт
-            </a>
-            <a className="text-link" href="#catalog">
-              Продукция
-            </a>
-          </div>
+          <
+<div className="hero-actions">
+  <a className="button button-dark" href="#catalog">
+    Выбрать десерт
+  </a>
+</div>
 
           <div className="hero-note">
             <span className="note-line" />
