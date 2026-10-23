@@ -252,12 +252,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="intro-strip" id="about">
-        <p>НЕ ПРОСТО ДЕСЕРТЫ</p>
-        <p>МАЛЕНЬКИЕ ПОВОДЫ ДЛЯ СЧАСТЬЯ</p>
-        <p>ВАШИ ОСОБЕННЫЕ МОМЕНТЫ</p>
-      </section>
-
       <section className="catalog section" id="catalog">
         <div className="section-heading">
           <div>
