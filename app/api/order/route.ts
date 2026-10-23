@@ -18,20 +18,16 @@ export async function POST(request: Request) {
 
     const { name, phone, delivery, address, comment, payment, items } = body;
 
+    
     if (
-  !name ||
-  !phone ||
-  !delivery ||
-  !payment ||
-  !Array.isArray(items) ||
-  items.length === 0 ||
-  items.length > Object.keys(PRODUCTS).length
-) {
-  return NextResponse.json(
-    { ok: false, error: "Заполните обязательные поля заказа" },
-    { status: 400 }
-  );
-}
+      !name ||
+      !phone ||
+      !delivery ||
+      !payment ||
+      !Array.isArray(items) ||
+      items.length === 0 ||
+      items.length > Object.keys(PRODUCTS).length
+    ) {
       return NextResponse.json(
         { ok: false, error: "Заполните обязательные поля заказа" },
         { status: 400 }
