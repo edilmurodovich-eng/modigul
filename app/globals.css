@@ -1,5 +1,5 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap");
 
 :root {
   --burgundy: #450914;
@@ -28,9 +28,10 @@ body {
   margin: 0;
   background: var(--cream);
   color: var(--text);
-  font-family: "Manrope", sans-serif;
-  font-size: 15px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
   line-height: 1.6;
+  font-style: normal;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -39,7 +40,8 @@ button,
 input,
 textarea,
 select {
-  font-family: "Manrope", sans-serif;
+  font-family: "Cormorant Garamond", serif;
+  font-style: normal;
 }
 
 button,
@@ -1504,4 +1506,10 @@ textarea:focus-visible {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+/* Единый шрифт и никаких курсивов */
+*,
+*::before,
+*::after {
+  font-style: normal !important;
 }
