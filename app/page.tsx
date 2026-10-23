@@ -160,7 +160,7 @@ export default function Home() {
         >
           <span className="brand-copy">
             <strong>Qulupnay.uz</strong>
-            <small>КОНДИТЕРСКАЯ</small>
+            <small> BAKERY </small>
           </span>
         </a>
 
@@ -541,7 +541,7 @@ export default function Home() {
         >
           <span className="brand-copy">
             <strong>Qulupnay.uz</strong>
-            <small>КОНДИТЕРСКАЯ</small>
+            <small> BAKERY </small>
           </span>
         </a>
 
