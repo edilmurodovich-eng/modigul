@@ -1418,3 +1418,30 @@ line-height: 1.5;
 .phone-row .phone-input {
 margin: 0;
 }
+
+/* Убираем курсив на всём сайте Qulupnay.uz */
+*,
+*::before,
+*::after {
+  font-style: normal !important;
+}
+
+/* Заголовки остаются элегантными, но прямыми */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+em,
+i,
+.eyebrow,
+.brand-copy strong,
+.brand-copy small,
+.hero-note,
+.photo-stamp,
+.product-category,
+.product-description,
+.promise-copy {
+  font-style: normal !important;
+}
