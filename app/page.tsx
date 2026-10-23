@@ -153,13 +153,13 @@ export default function Home() {
   return (
     <main>
       <header className="header">
-        <a className="brand" href="#" aria-label="Qulupnay — главная">
-          <span className="brand-mark">Q</span>
-          <span className="brand-copy">
-            <strong>qulupnay</strong>
-            <small>КОНДИТЕРСКАЯ</small>
-          </span>
-        </a>
+        <a className="brand" href="#" aria-label="Qulupnay.uz — главная">
+  <span className="brand-mark">Q</span>
+  <span className="brand-copy">
+    <strong>Qulupnay.uz</strong>
+    <small>BAKERY</small>
+  </span>
+</a>
 
         <nav className="navigation" aria-label="Главная навигация">
           <a href="#catalog">Каталог</a>
