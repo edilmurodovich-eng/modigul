@@ -1169,3 +1169,112 @@ button {
 .add-button span {
   color: inherit;
 }
+/* Выбор доставки и самовывоза */
+.delivery-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.delivery-choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 18px 14px;
+  border: 1px solid #e8ddd2;
+  border-radius: 16px;
+  background: #fffdf9;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.delivery-choice.selected {
+  border: 2px solid #79543b;
+  padding: 17px 13px;
+  background: #f8eee4;
+  box-shadow: 0 4px 14px rgba(86, 56, 35, 0.08);
+}
+
+.delivery-choice input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.delivery-choice:focus-within {
+  outline: 2px solid #79543b;
+  outline-offset: 3px;
+}
+
+.delivery-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #f0e1d2;
+  font-size: 23px;
+}
+
+.delivery-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.delivery-text strong {
+  color: #38291f;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.delivery-text small {
+  color: #806e60;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.delivery-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #d8c9ba;
+  border-radius: 50%;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.delivery-choice.selected .delivery-check {
+  border-color: #79543b;
+  background: #79543b;
+}
+
+@media (max-width: 520px) {
+  .delivery-options {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .delivery-choice {
+    padding: 14px;
+  }
+
+  .delivery-choice.selected {
+    padding: 13px;
+  }
+}
