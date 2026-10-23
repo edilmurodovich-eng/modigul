@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useMemo, useState } from "react";
@@ -54,32 +55,34 @@ export default function Home() {
   const [cart, setCart] = useState<Record<number, number>>({});
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-
-const formatPhone = (value: string) => {
-  let digits = value.replace(/\D/g, "");
-
-  // Позволяет вставить номер даже вместе с кодом +998
-  if (digits.startsWith("998")) {
-    digits = digits.slice(3);
-  }
-
-  digits = digits.slice(0, 9);
-
-  if (digits.length <= 2) return digits;
-  if (digits.length <= 5) {
-    return `${digits.slice(0, 2)} ${digits.slice(2)}`;
-  }
-  if (digits.length <= 7) {
-    return ${digits.slice(0, 2)} ${digits.slice(2, 5)}-${digits.slice(5)};
-  }
-
-  return ${digits.slice(0, 2)} ${digits.slice(2, 5)}-${digits.slice(5, 7)}-${digits.slice(7, 9)};
-};
   const [delivery, setDelivery] = useState<Delivery>("delivery");
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  const formatPhone = (value: string) => {
+    let digits = value.replace(/\D/g, "");
+
+    // Позволяет вставить номер вместе с кодом +998.
+    if (digits.startsWith("998")) {
+      digits = digits.slice(3);
+    }
+
+    digits = digits.slice(0, 9);
+
+    if (digits.length <= 2) return digits;
+
+    if (digits.length <= 5) {
+      return `${digits.slice(0, 2)} ${digits.slice(2)}`;
+    }
+
+    if (digits.length <= 7) {
+      return `${digits.slice(0, 2)} ${digits.slice(2, 5)}-${digits.slice(5)}`;
+    }
+
+    return `${digits.slice(0, 2)} ${digits.slice(2, 5)}-${digits.slice(5, 7)}-${digits.slice(7, 9)}`;
+  };
 
   const cartItems = useMemo(
     () =>
@@ -180,7 +183,9 @@ const formatPhone = (value: string) => {
         >
           <span className="brand-copy">
             <strong>Qulupnay.uz</strong>
-            <small> BAKERY </small>
+            <small>
+              <span className="brand-dot">·</span> BAKERY
+            </small>
           </span>
         </a>
 
@@ -218,10 +223,10 @@ const formatPhone = (value: string) => {
           </p>
 
           <div className="hero-actions">
-  <a className="button button-dark" href="#catalog">
-    Выбрать десерт
-  </a>
-</div>
+            <a className="button button-dark" href="#catalog">
+              Выбрать десерт
+            </a>
+          </div>
 
           <div className="hero-note">
             <span className="note-line" />
@@ -284,9 +289,7 @@ const formatPhone = (value: string) => {
               <div className="product-info">
                 <p className="product-category">{product.category}</p>
                 <h3>{product.name}</h3>
-                <p className="product-description">
-                  {product.description}
-                </p>
+                <p className="product-description">{product.description}</p>
 
                 <div className="product-bottom">
                   <strong className="product-price">
@@ -298,7 +301,7 @@ const formatPhone = (value: string) => {
                       className="add-button"
                       type="button"
                       onClick={() => changeQuantity(product.id, 1)}
-                      aria-label={Добавить ${product.name} в корзину}
+                      aria-label={`Добавить ${product.name} в корзину`}
                     >
                       <span>+</span> Добавить
                     </button>
@@ -450,94 +453,101 @@ const formatPhone = (value: string) => {
             />
 
             <div className="phone-field">
-          <label htmlFor="customer-phone">Номер телефона</label>
-          <div className="phone-row">
-            <div className="phone-country">
-              <span className="phone-flag">🇺🇿</span>
-              <span className="phone-code">+998</span>
+              <label htmlFor="customer-phone">Номер телефона</label>
+
+              <div className="phone-row">
+                <div className="phone-country">
+                  <span className="phone-flag">🇺🇿</span>
+                  <span className="phone-code">+998</span>
+                </div>
+
+                <input
+                  id="customer-phone"
+                  className="phone-input"
+                  name="phone"
+                  type="tel"
+                  inputMode="numeric"
+                  autoComplete="tel-national"
+                  value={formatPhone(phone)}
+                  onChange={(event) => {
+                    let digits = event.target.value.replace(/\D/g, "");
+
+                    if (digits.startsWith("998")) {
+                      digits = digits.slice(3);
+                    }
+
+                    setPhone(digits.slice(0, 9));
+                  }}
+                  placeholder="90 123-45-67"
+                  maxLength={12}
+                  pattern="[0-9]{2} [0-9]{3}-[0-9]{2}-[0-9]{2}"
+                  title="Введите 9 цифр номера телефона"
+                  required
+                />
+              </div>
+
+              <small className="phone-hint">
+                Введите 9 цифр номера после +998
+              </small>
             </div>
-            <input
-              id="customer-phone"
-              className="phone-input"
-              name="phone"
-              type="tel"
-              inputMode="numeric"
-              autoComplete="tel-national"
-              value={formatPhone(phone)}
-              onChange={(event) => {
-                let digits = event.target.value.replace(/\D/g, "");
-                if (digits.startsWith("998")) {
-                  digits = digits.slice(3);
-                }
-                setPhone(digits.slice(0, 9));
-              }}
-              placeholder="90 123-45-67"
-              maxLength={12}
-              pattern="[0-9]{2} [0-9]{3}-[0-9]{2}-[0-9]{2}"
-              title="Введите 9 цифр номера телефона"
-              required
-            />
-          </div>
-          <small className="phone-hint">
-            Введите 9 цифр номера после +998
-          </small>
-        </div>
 
             <span className="field-label">Как получите заказ?</span>
 
             <div className="delivery-options">
-  <label
-    className={delivery-choice ${delivery === "delivery" ? "selected" : ""}}
-  >
-    <input
-      type="radio"
-      name="delivery"
-      value="delivery"
-      checked={delivery === "delivery"}
-      onChange={() => setDelivery("delivery")}
-    />
+              <label
+                className={`delivery-choice ${
+                  delivery === "delivery" ? "selected" : ""
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="delivery"
+                  value="delivery"
+                  checked={delivery === "delivery"}
+                  onChange={() => setDelivery("delivery")}
+                />
 
-    <span className="delivery-icon" aria-hidden="true">
-      🚚
-    </span>
+                <span className="delivery-icon" aria-hidden="true">
+                  🚚
+                </span>
 
-    <span className="delivery-text">
-      <strong>Доставка</strong>
-      
-      <small> (Доставим заказ по вашему адресу)</small>
-    </span>
+                <span className="delivery-text">
+                  <strong>Доставка</strong>
+                  <small>Доставим заказ по вашему адресу</small>
+                </span>
 
-    <span className="delivery-check" aria-hidden="true">
-      {delivery === "delivery" ? "✓" : ""}
-    </span>
-  </label>
+                <span className="delivery-check" aria-hidden="true">
+                  {delivery === "delivery" ? "✓" : ""}
+                </span>
+              </label>
 
-  <label
-    className={delivery-choice ${delivery === "pickup" ? "selected" : ""}}
-  >
-    <input
-      type="radio"
-      name="delivery"
-      value="pickup"
-      checked={delivery === "pickup"}
-      onChange={() => setDelivery("pickup")}
-    />
+              <label
+                className={`delivery-choice ${
+                  delivery === "pickup" ? "selected" : ""
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="delivery"
+                  value="pickup"
+                  checked={delivery === "pickup"}
+                  onChange={() => setDelivery("pickup")}
+                />
 
-    <span className="delivery-icon" aria-hidden="true">
-      🛍️
-    </span>
+                <span className="delivery-icon" aria-hidden="true">
+                  🛍️
+                </span>
 
-    <span className="delivery-text">
-      <strong>Самовывоз</strong>
-      
-      <small> (Вы заберёте заказ самостоятельно)</small>
-    </span>
+                <span className="delivery-text">
+                  <strong>Самовывоз</strong>
+                  <small>Вы заберёте заказ самостоятельно</small>
+                </span>
 
-    <span className="delivery-check" aria-hidden="true">
-      {delivery === "pickup" ? "✓" : ""}
-    </span>
-  </label>
-</div>
+                <span className="delivery-check" aria-hidden="true">
+                  {delivery === "pickup" ? "✓" : ""}
+                </span>
+              </label>
+            </div>
 
             {delivery === "delivery" && (
               <>
@@ -601,7 +611,9 @@ const formatPhone = (value: string) => {
         >
           <span className="brand-copy">
             <strong>Qulupnay.uz</strong>
-            <small> BAKERY </small>
+            <small>
+              <span className="brand-dot">·</span> BAKERY
+            </small>
           </span>
         </a>
 
