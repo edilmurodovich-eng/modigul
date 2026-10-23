@@ -153,20 +153,32 @@ export default function Home() {
   return (
     <main>
       <header className="header">
-  <a className="brand" href="#" aria-label="Qulupnay.uz — главная">
-    <span className="brand-mark">Q</span>
-    <span className="brand-copy">
-      <strong>Qulupnay.uz</strong>
-      <small>BAKERY</small>
-    </span>
-  </a>
+        <a
+          className="brand"
+          href="#"
+          aria-label="Qulupnay.uz — главная"
+        >
+          <span className="brand-copy">
+            <strong>Qulupnay.uz</strong>
+            <small>КОНДИТЕРСКАЯ</small>
+          </span>
+        </a>
 
-  <nav className="navigation" aria-label="Главная навигация">
-    <a href="#catalog">Каталог</a>
-    <a href="#about">О нас</a>
-    <a href="#order">Корзина ({itemCount})</a>
-  </nav>
-</header>
+        <nav
+          className="navigation"
+          aria-label="Главная навигация"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            gap: "12px",
+          }}
+        >
+          <a href="#catalog">Каталог</a>
+          <a href="#about">О нас</a>
+          <a href="#order">Корзина ({itemCount})</a>
+        </nav>
+      </header>
 
       <section className="hero">
         <div className="hero-content">
@@ -187,10 +199,10 @@ export default function Home() {
 
           <div className="hero-actions">
             <a className="button button-dark" href="#catalog">
-  Выбрать десерт
-</a>
-            <a className="text-link" href="#about">
-              Наша философия
+              Выбрать десерт
+            </a>
+            <a className="text-link" href="#catalog">
+              Продукция
             </a>
           </div>
 
@@ -209,21 +221,18 @@ export default function Home() {
               fetchPriority="high"
             />
           </div>
+
           <div className="photo-stamp">
             <span>Сделано</span>
             <strong>с любовью</strong>
             <span>для вас ♡</span>
           </div>
-          <div className="hero-number">01 / SWEET COLLECTION</div>
         </div>
-
       </section>
 
       <section className="intro-strip" id="about">
         <p>НЕ ПРОСТО ДЕСЕРТЫ</p>
-        <span>✳</span>
         <p>МАЛЕНЬКИЕ ПОВОДЫ ДЛЯ СЧАСТЬЯ</p>
-        <span>✳</span>
         <p>ВАШИ ОСОБЕННЫЕ МОМЕНТЫ</p>
       </section>
 
@@ -235,6 +244,7 @@ export default function Home() {
               Наша сладкая <em>коллекция</em>
             </h2>
           </div>
+
           <p className="section-description">
             Вкусные детали, которые делают обычный день особенным.
           </p>
@@ -251,15 +261,15 @@ export default function Home() {
                   loading="lazy"
                 />
                 <span className="product-label">{product.label}</span>
-                <span className="product-index">
-                  0{index + 1}
-                </span>
+                <span className="product-index">0{index + 1}</span>
               </div>
 
               <div className="product-info">
                 <p className="product-category">{product.category}</p>
                 <h3>{product.name}</h3>
-                <p className="product-description">{product.description}</p>
+                <p className="product-description">
+                  {product.description}
+                </p>
 
                 <div className="product-bottom">
                   <strong className="product-price">
@@ -284,7 +294,9 @@ export default function Home() {
                       >
                         −
                       </button>
+
                       <span>{cart[product.id]}</span>
+
                       <button
                         type="button"
                         onClick={() => changeQuantity(product.id, 1)}
@@ -300,15 +312,10 @@ export default function Home() {
             </article>
           ))}
         </div>
-
-        <p className="catalog-footnote">
-          * Ассортимент и цены можно изменить под ваше меню.
-        </p>
       </section>
 
       <section className="promise">
         <div className="promise-inner">
-          <span className="promise-symbol">✳</span>
           <div>
             <p className="eyebrow">ФИЛОСОФИЯ QULUPNAY</p>
             <h2>
@@ -317,6 +324,7 @@ export default function Home() {
               <em>Счастье — во вкусе.</em>
             </h2>
           </div>
+
           <p className="promise-copy">
             От уютного чаепития до большого праздника — пусть у каждого
             момента будет свой сладкий вкус.
@@ -332,6 +340,7 @@ export default function Home() {
               Оформить <em>заказ</em>
             </h2>
           </div>
+
           <p className="section-description">
             Выберите десерты и оставьте контакты. Мы свяжемся с вами для
             подтверждения.
@@ -350,18 +359,20 @@ export default function Home() {
                 <span className="empty-cart-icon">♡</span>
                 <p>Здесь пока пусто</p>
                 <span>Добавьте что-нибудь вкусное из каталога.</span>
-                <a href="#catalog">Перейти к десертам ↗</a>
+                <a href="#catalog">Перейти к десертам</a>
               </div>
             ) : (
               <div className="cart-items">
                 {cartItems.map((item) => (
                   <div className="checkout-item" key={item.id}>
                     <div className="cart-item-image">
-                      <img src={item.image} alt="" />
+                      <img src={item.image} alt={item.name} />
                     </div>
+
                     <div className="cart-item-details">
                       <strong>{item.name}</strong>
                       <span>{money(item.price)} / шт.</span>
+
                       <div className="quantity-control cart-quantity">
                         <button
                           type="button"
@@ -370,7 +381,9 @@ export default function Home() {
                         >
                           −
                         </button>
+
                         <span>{item.quantity}</span>
+
                         <button
                           type="button"
                           onClick={() => changeQuantity(item.id, 1)}
@@ -381,6 +394,7 @@ export default function Home() {
                         </button>
                       </div>
                     </div>
+
                     <strong className="cart-item-total">
                       {money(item.price * item.quantity)}
                     </strong>
@@ -393,6 +407,7 @@ export default function Home() {
               <span>Итого за товары</span>
               <strong>{money(total)}</strong>
             </div>
+
             <p className="cart-note">
               Стоимость и условия доставки уточняются при подтверждении заказа.
             </p>
@@ -433,6 +448,7 @@ export default function Home() {
             />
 
             <span className="field-label">Как получите заказ?</span>
+
             <div className="delivery-options">
               <label className="delivery-choice">
                 <input
@@ -441,9 +457,10 @@ export default function Home() {
                   checked={delivery === "delivery"}
                   onChange={() => setDelivery("delivery")}
                 />
+
                 <span>
                   <strong>Доставка</strong>
-                  <small>До вашего адреса</small>
+                  <small>Доставим заказ по вашему адресу</small>
                 </span>
               </label>
 
@@ -454,9 +471,10 @@ export default function Home() {
                   checked={delivery === "pickup"}
                   onChange={() => setDelivery("pickup")}
                 />
+
                 <span>
                   <strong>Самовывоз</strong>
-                  <small>Забрать самостоятельно</small>
+                  <small>Вы заберёте заказ самостоятельно</small>
                 </span>
               </label>
             </div>
@@ -481,6 +499,7 @@ export default function Home() {
             <label htmlFor="customer-comment">
               Комментарий <span className="optional">(необязательно)</span>
             </label>
+
             <textarea
               id="customer-comment"
               name="comment"
@@ -515,16 +534,20 @@ export default function Home() {
       </section>
 
       <footer className="footer">
-        <a className="brand footer-brand" href="#">
-          <span className="brand-mark">Q</span>
+        <a
+          className="brand footer-brand"
+          href="#"
+          aria-label="Qulupnay.uz — главная"
+        >
           <span className="brand-copy">
-            <strong>qulupnay</strong>
+            <strong>Qulupnay.uz</strong>
             <small>КОНДИТЕРСКАЯ</small>
           </span>
         </a>
 
         <p>Сладкие моменты, созданные с любовью.</p>
         <a href="#catalog">Каталог ↑</a>
+
         <span className="footer-copyright">
           © {new Date().getFullYear()} Qulupnay.uz
         </span>
