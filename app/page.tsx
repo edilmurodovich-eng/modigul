@@ -447,34 +447,56 @@ export default function Home() {
             <span className="field-label">Как получите заказ?</span>
 
             <div className="delivery-options">
-              <label className="delivery-choice">
-                <input
-                  type="radio"
-                  name="delivery"
-                  checked={delivery === "delivery"}
-                  onChange={() => setDelivery("delivery")}
-                />
+  <label
+    className={`delivery-choice ${delivery === "delivery" ? "selected" : ""}`}
+  >
+    <input
+      type="radio"
+      name="delivery"
+      value="delivery"
+      checked={delivery === "delivery"}
+      onChange={() => setDelivery("delivery")}
+    />
 
-                <span>
-                  <strong>Доставка</strong>
-                  <small> (Доставим заказ по вашему адресу)</small>
-                </span>
-              </label>
+    <span className="delivery-icon" aria-hidden="true">
+      🚚
+    </span>
 
-              <label className="delivery-choice">
-                <input
-                  type="radio"
-                  name="delivery"
-                  checked={delivery === "pickup"}
-                  onChange={() => setDelivery("pickup")}
-                />
+    <span className="delivery-text">
+      <strong>Доставка</strong>
+      <small>Доставим заказ по вашему адресу</small>
+    </span>
 
-                <span>
-                  <strong>Самовывоз</strong>
-                  <small> (Вы заберёте заказ самостоятельно)</small>
-                </span>
-              </label>
-            </div>
+    <span className="delivery-check" aria-hidden="true">
+      {delivery === "delivery" ? "✓" : ""}
+    </span>
+  </label>
+
+  <label
+    className={`delivery-choice ${delivery === "pickup" ? "selected" : ""}`}
+  >
+    <input
+      type="radio"
+      name="delivery"
+      value="pickup"
+      checked={delivery === "pickup"}
+      onChange={() => setDelivery("pickup")}
+    />
+
+    <span className="delivery-icon" aria-hidden="true">
+      🛍️
+    </span>
+
+    <span className="delivery-text">
+      <strong>Самовывоз</strong>
+      <small>Вы заберёте заказ самостоятельно</small>
+    </span>
+
+    <span className="delivery-check" aria-hidden="true">
+      {delivery === "pickup" ? "✓" : ""}
+    </span>
+  </label>
+</div>
 
             {delivery === "delivery" && (
               <>
