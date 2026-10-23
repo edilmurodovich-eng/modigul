@@ -1445,3 +1445,40 @@ i,
 .promise-copy {
   font-style: normal !important;
 }
+
+/* Единый шрифт для всего сайта Qulupnay.uz */
+*,
+*::before,
+*::after {
+  font-family: "Cormorant Garamond", serif !important;
+}
+
+/* Убираем курсив, сохраняя единый шрифт */
+*,
+*::before,
+*::after {
+  font-style: normal !important;
+}
+
+/* Заголовки оставляем выразительными */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.brand-copy strong {
+  font-weight: 600;
+}
+
+/* Основной текст делаем читаемым */
+p,
+a,
+button,
+input,
+textarea,
+label,
+small,
+span {
+  font-family: "Cormorant Garamond", serif !important;
+}
