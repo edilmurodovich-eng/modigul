@@ -224,8 +224,8 @@ export default function Home() {
 
           <div className="photo-stamp">
             <span>Сделано</span>
-            <strong>с любовью</strong>
-            <span>для вас ♡</span>
+            <strong> с любовью</strong>
+            <span> для вас ♡</span>
           </div>
         </div>
       </section>
