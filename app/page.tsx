@@ -328,25 +328,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="promise">
-        <div className="promise-inner">
-          <div>
-            <p className="eyebrow">ФИЛОСОФИЯ QULUPNAY</p>
-            <h2>
-              Красота в деталях.
-              <br />
-              <em>Счастье — во вкусе.</em>
-            </h2>
-          </div>
-
-          <p className="promise-copy">
-            От уютного чаепития до большого праздника — пусть у каждого
-            момента будет свой сладкий вкус.
-          </p>
-        </div>
-      </section>
-
-      <section className="checkout section" id="order">
+     <section className="checkout section" id="order">
         <div className="section-heading checkout-heading">
           <div>
             <p className="eyebrow">ВАШИ ЛЮБИМЫЕ ДЕСЕРТЫ</p>
