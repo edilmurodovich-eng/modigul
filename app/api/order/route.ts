@@ -34,8 +34,7 @@ const PRODUCTS = {
 
 const money = (value: number) =>
   new Intl.NumberFormat("ru-RU").format(value) + " сум";
-  new Intl.NumberFormat("ru-RU").format(value) + " сум";
-
+ 
 export async function POST(request: Request) {
   try {
     const token = process.env.TELEGRAM_BOT_TOKEN;
