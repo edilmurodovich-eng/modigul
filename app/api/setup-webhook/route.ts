@@ -31,7 +31,7 @@ export async function GET(request: Request) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          url: "https://qulupnayuz-yqxj.vercel.app/⁠",
+url: "https://qulupnayuz-yqxj.vercel.app/api/telegram-webhook",
           secret_token: secret,
           allowed_updates: ["callback_query"],
         }),
