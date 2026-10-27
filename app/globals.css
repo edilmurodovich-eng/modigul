@@ -1512,3 +1512,54 @@ textarea:focus-visible {
 *::after {
   font-style: normal !important;
 }
+
+/* Qulupnay.uz — крупный и заметный статус заказа */
+.order-form .order-notice-success[aria-live="polite"] {
+  margin-top: 24px;
+  padding: 26px 22px;
+  border: 3px solid #d9b77b;
+  border-radius: 20px;
+  background: #fff8ef;
+  color: #450914;
+  font-size: 19px;
+  line-height: 1.7;
+  box-shadow: 0 8px 28px rgba(69, 9, 20, 0.13);
+}
+
+.order-form .order-notice-success[aria-live="polite"] > strong:first-child {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.order-form .order-notice-success[aria-live="polite"] p {
+  margin: 12px 0;
+}
+
+.order-form .order-notice-success[aria-live="polite"] p strong {
+  display: inline-block;
+  margin-top: 4px;
+  color: #450914;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.order-form .order-notice-success[aria-live="polite"] p:last-child {
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .order-form .order-notice-success[aria-live="polite"] {
+    padding: 22px 18px;
+    font-size: 18px;
+  }
+
+  .order-form .order-notice-success[aria-live="polite"] > strong:first-child {
+    font-size: 22px;
+  }
+
+  .order-form .order-notice-success[aria-live="polite"] p strong {
+    font-size: 26px;
+  }
+}
