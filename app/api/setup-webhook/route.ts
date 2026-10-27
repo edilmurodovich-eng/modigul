@@ -1,11 +1,13 @@
 
+
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const key = searchParams.get("key");
+  const action = searchParams.get("action") || "set";
 
   const secret = process.env.TELEGRAM_WEBHOOK_SECRET;
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -25,25 +27,53 @@ export async function GET(request: Request) {
   }
 
   try {
+    const method =
+      action === "info" ? "getWebhookInfo" : "setWebhook";
+
+    const body =
+      action === "info"
+        ? undefined
+        : JSON.stringify({
+            url: "https://qulupnayuz-yqxj.vercel.app/api/telegram-webhook",
+            secret_token: secret,
+            allowed_updates: ["callback_query"],
+          });
+
     const response = await fetch(
-      `https://api.telegram.org/bot${botToken}/setWebhook`,
+      `https://api.telegram.org/bot${botToken}/${method}`,
       {
-        method: "POST",
+        method: action === "info" ? "GET" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-url: "https://qulupnayuz-yqxj.vercel.app/api/telegram-webhook",
-          secret_token: secret,
-          allowed_updates: ["callback_query"],
-        }),
+        body,
         cache: "no-store",
       }
     );
 
     const result = await response.json();
 
+    if (!result.ok) {
+      return NextResponse.json(
+        { ok: false, error: "Telegram отклонил запрос" },
+        { status: 502 }
+      );
+    }
+
+    if (action === "info") {
+      return NextResponse.json({
+        ok: true,
+        webhook: {
+          url: result.result?.url,
+          pending_update_count: result.result?.pending_update_count,
+          last_error_date: result.result?.last_error_date,
+          last_error_message: result.result?.last_error_message,
+          allowed_updates: result.result?.allowed_updates,
+        },
+      });
+    }
+
     return NextResponse.json({
-      ok: result.ok === true,
-      description: result.description ?? "Ответ Telegram получен",
+      ok: true,
+      description: result.description ?? "Webhook настроен",
     });
   } catch {
     return NextResponse.json(
