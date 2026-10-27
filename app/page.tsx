@@ -639,11 +639,6 @@ export default function Home() {
           <div className="hero-image-frame">
             <img src={products[0].image} alt={localizedProducts[0].name} />
           </div>
-          <div className="hero-stamp">
-            <span>{t.made}</span>
-            <strong>{t.withLove}</strong>
-            <span>{t.forYou}</span>
-          </div>
         </div>
       </section>
 
