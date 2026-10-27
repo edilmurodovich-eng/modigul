@@ -1804,3 +1804,22 @@ textarea:focus-visible {
     padding-bottom: 88px;
   }
 }
+
+.copyright-owner {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 16px;
+  padding: 14px 16px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #d9b77b;
+  border-top: 1px solid rgba(217, 183, 123, 0.25);
+  overflow-wrap: anywhere;
+}
+
+.copyright-owner a {
+  color: #d9b77b;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
