@@ -68,9 +68,6 @@ const translations = {
     heroDescription:
       "Домашняя выпечка, нежные десерты и сладкие моменты для вас и ваших близких.",
     chooseDessert: "Выбрать десерт",
-    made: "СДЕЛАНО",
-    withLove: "с любовью",
-    forYou: "ДЛЯ ВАС",
     fresh: "Свежая выпечка",
     freshDescription: "Готовим с заботой о качестве",
     love: "С любовью",
@@ -153,9 +150,6 @@ const translations = {
     heroDescription:
       "Siz va yaqinlaringiz uchun uy pishiriqlari, nafis shirinliklar va yoqimli lahzalar.",
     chooseDessert: "Shirinlik tanlash",
-    made: "TAYYORLANDI",
-    withLove: "mehr bilan",
-    forYou: "SIZ UCHUN",
     fresh: "Yangi pishiriqlar",
     freshDescription: "Sifatga e’tibor bilan tayyorlaymiz",
     love: "Mehr bilan",
