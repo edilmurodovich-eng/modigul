@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Product = {
   id: number;
@@ -18,6 +18,13 @@ type CartItem = {
 
 type Delivery = "delivery" | "pickup";
 type Payment = "cash" | "card" | "transfer";
+
+type TrackedOrder = {
+  orderId: string;
+  trackingToken: string;
+  status: string;
+  statusLabel: string;
+};
 
 const products: Product[] = [
   {
@@ -74,6 +81,14 @@ const paymentLabels: Record<Payment, string> = {
   transfer: "Перевод на карту",
 };
 
+const statusLabels: Record<string, string> = {
+  new: "Ожидает подтверждения",
+  accepted: "Заказ принят",
+  preparing: "Готовится",
+  courier: "Передан курьеру",
+  delivered: "Доставлен",
+};
+
 function formatPrice(price: number) {
   return `${price.toLocaleString("ru-RU")} сум`;
 }
@@ -118,6 +133,9 @@ export default function Home() {
   const [notice, setNotice] = useState("");
   const [noticeError, setNoticeError] = useState(false);
 
+  const [trackedOrder, setTrackedOrder] = useState<TrackedOrder | null>(null);
+  const [trackingError, setTrackingError] = useState("");
+
   const cartItems = useMemo(
     () =>
       cart
@@ -137,6 +155,70 @@ export default function Home() {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
+  // Проверяем статус заказа каждые 5 секунд.
+  useEffect(() => {
+    if (!trackedOrder) return;
+
+    let active = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    const checkStatus = async () => {
+      try {
+        const params = new URLSearchParams({
+          orderId: trackedOrder.orderId,
+          token: trackedOrder.trackingToken,
+        });
+
+        const response = await fetch(
+          `/api/order-status?${params.toString()}`,
+          { cache: "no-store" }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || "Не удалось проверить статус");
+        }
+
+        if (active) {
+          setTrackedOrder((current) => {
+            if (!current || current.orderId !== data.orderId) {
+              return current;
+            }
+
+            return {
+              ...current,
+              status: data.status,
+              statusLabel:
+                data.statusLabel ||
+                statusLabels[data.status] ||
+                "Статус обновлён",
+            };
+          });
+
+          setTrackingError("");
+        }
+      } catch {
+        if (active) {
+          setTrackingError(
+            "Не удалось обновить статус. Повторная проверка через 5 секунд."
+          );
+        }
+      } finally {
+        if (active) {
+          timer = setTimeout(checkStatus, 5000);
+        }
+      }
+    };
+
+    void checkStatus();
+
+    return () => {
+      active = false;
+      if (timer) clearTimeout(timer);
+    };
+  }, [trackedOrder?.orderId, trackedOrder?.trackingToken]);
 
   function addToCart(id: number) {
     setNotice("");
@@ -172,27 +254,15 @@ export default function Home() {
 
   function handlePhoneChange(value: string) {
     const digits = value.replace(/\D/g, "");
-
-    let national = digits.startsWith("998")
-      ? digits.slice(3)
-      : digits;
-
+    let national = digits.startsWith("998") ? digits.slice(3) : digits;
     national = national.slice(0, 9);
 
     let formatted = "+998";
 
-    if (national.length > 0) {
-      formatted += " " + national.slice(0, 2);
-    }
-    if (national.length > 2) {
-      formatted += " " + national.slice(2, 5);
-    }
-    if (national.length > 5) {
-      formatted += " " + national.slice(5, 7);
-    }
-    if (national.length > 7) {
-      formatted += " " + national.slice(7, 9);
-    }
+    if (national.length > 0) formatted += " " + national.slice(0, 2);
+    if (national.length > 2) formatted += " " + national.slice(2, 5);
+    if (national.length > 5) formatted += " " + national.slice(5, 7);
+    if (national.length > 7) formatted += " " + national.slice(7, 9);
 
     setPhone(formatted);
   }
@@ -225,9 +295,7 @@ export default function Home() {
     try {
       const response = await fetch("/api/order", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),
           phone: phone.trim(),
@@ -251,8 +319,22 @@ export default function Home() {
         );
       }
 
+      if (!data.orderId || !data.trackingToken) {
+        throw new Error(
+          "Заказ отправлен, но данные отслеживания не получены. Свяжитесь с нами для уточнения статуса."
+        );
+      }
+
+      setTrackedOrder({
+        orderId: data.orderId,
+        trackingToken: data.trackingToken,
+        status: data.status ?? "new",
+        statusLabel:
+          data.statusLabel ?? "Ожидает подтверждения",
+      });
+
       setNotice(
-        "Заказ отправлен! Спасибо за ваш выбор. Мы свяжемся с вами."
+        "Заказ отправлен! Ниже вы можете отслеживать его статус."
       );
       setNoticeError(false);
       setCart([]);
@@ -324,10 +406,7 @@ export default function Home() {
 
         <div className="hero-visual">
           <div className="hero-image-frame">
-            <img
-              src={products[0].image}
-              alt="Красивый праздничный торт"
-            />
+            <img src={products[0].image} alt="Красивый праздничный торт" />
           </div>
           <div className="hero-stamp">
             <span>СДЕЛАНО</span>
@@ -697,6 +776,24 @@ export default function Home() {
               role="status"
             >
               {notice}
+            </div>
+          )}
+
+          {trackedOrder && (
+            <div
+              className="order-notice order-notice-success"
+              aria-live="polite"
+            >
+              <strong>Отслеживание заказа</strong>
+              <p>Номер заказа: {trackedOrder.orderId}</p>
+              <p>
+                Текущий статус:{" "}
+                <strong>{trackedOrder.statusLabel}</strong>
+              </p>
+              {trackingError && <p>{trackingError}</p>}
+              {trackedOrder.status === "delivered" && (
+                <p>Спасибо за заказ! Будем рады видеть вас снова.</p>
+              )}
             </div>
           )}
         </form>
