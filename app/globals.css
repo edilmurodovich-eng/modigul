@@ -1677,3 +1677,40 @@ textarea:focus-visible {
     font-size: 13px;
   }
 }
+
+/* Адаптивный текст в нижнем декоративном круге */
+* {
+  box-sizing: border-box;
+}
+
+.footer,
+.site-footer,
+.footer-note,
+.made-with-love {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.footer p,
+.site-footer p,
+.footer-note,
+.made-with-love {
+  max-width: 100%;
+  padding-left: 12px;
+  padding-right: 12px;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.5;
+}
+
+@media (max-width: 380px) {
+  .footer p,
+  .site-footer p,
+  .footer-note,
+  .made-with-love {
+    font-size: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
