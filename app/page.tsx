@@ -785,7 +785,6 @@ export default function Home() {
               aria-live="polite"
             >
               <strong>Отслеживание заказа</strong>
-              <p>Номер заказа: {trackedOrder.orderId}</p>
               <p>
                 Текущий статус:{" "}
                 <strong>{trackedOrder.statusLabel}</strong>
