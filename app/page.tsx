@@ -1,10 +1,16 @@
 
+"
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
 
+type Language = "ru" | "uz";
+type ProductId = 1 | 2 | 3;
+type Delivery = "delivery" | "pickup";
+type Payment = "cash" | "card" | "transfer";
+
 type Product = {
-  id: number;
+  id: ProductId;
   name: string;
   description: string;
   price: number;
@@ -15,9 +21,6 @@ type CartItem = {
   id: number;
   quantity: number;
 };
-
-type Delivery = "delivery" | "pickup";
-type Payment = "cash" | "card" | "transfer";
 
 type TrackedOrder = {
   orderId: string;
@@ -53,44 +56,231 @@ const products: Product[] = [
   },
 ];
 
-const paymentOptions: {
-  id: Payment;
-  title: string;
-  description: string;
-}[] = [
-  {
-    id: "cash",
-    title: "Наличными",
-    description: "Оплата наличными при получении",
+const translations = {
+  ru: {
+    home: "Главная",
+    catalog: "Каталог",
+    order: "Заказать",
+    cart: "Корзина",
+    eyebrow: "СВЕЖАЯ ВЫПЕЧКА · С ЗАБОТОЙ",
+    hero1: "Вкус, который",
+    hero2: "делает день",
+    hero3: "особенным",
+    heroDescription:
+      "Домашняя выпечка, нежные десерты и сладкие моменты для вас и ваших близких.",
+    chooseDessert: "Выбрать десерт",
+    made: "СДЕЛАНО",
+    withLove: "с любовью",
+    forYou: "ДЛЯ ВАС",
+    fresh: "Свежая выпечка",
+    freshDescription: "Готовим с заботой о качестве",
+    love: "С любовью",
+    loveDescription: "Внимание к каждой детали",
+    convenient: "Удобный заказ",
+    convenientDescription: "Доставка или самовывоз",
+    collection: "НАША КОЛЛЕКЦИЯ",
+    chooseSweet: "Выберите свою сладость",
+    collectionDescription:
+      "Найдите любимый десерт для уютного дня или особенного события.",
+    dessertCount: "десерта",
+    addToCart: "Добавить",
+    cartTitle: "Ваша корзина",
+    pieces: "шт.",
+    emptyCart: "Корзина пока пуста. Выберите десерт в каталоге.",
+    total: "Итого",
+    orderEyebrow: "ВАШ СЛАДКИЙ ЗАКАЗ",
+    orderTitle: "Пусть будет вкусно",
+    orderDescription:
+      "Заполните данные, выберите способ получения и оплаты. Мы свяжемся с вами для подтверждения заказа.",
+    contact: "Контактные данные",
+    contactDescription: "Как с вами связаться?",
+    yourName: "Ваше имя",
+    namePlaceholder: "Введите ваше имя",
+    phone: "Номер телефона",
+    deliveryMethod: "Способ получения",
+    deliveryDescription: "Как вам будет удобнее?",
+    delivery: "Доставка",
+    deliveryDetails: "До указанного адреса",
+    pickup: "Самовывоз",
+    pickupDetails: "Забрать самостоятельно",
+    address: "Адрес доставки",
+    addressPlaceholder: "Улица, дом, квартира",
+    comment: "Комментарий к заказу",
+    optional: "Необязательно",
+    commentPlaceholder: "Пожелания к заказу...",
+    paymentMethod: "Способ оплаты",
+    paymentDescription: "Выберите удобный вариант",
+    cash: "Наличными",
+    cashDescription: "Оплата наличными при получении",
+    card: "Картой при получении",
+    cardDescription: "Оплата картой при получении заказа",
+    transfer: "Перевод на карту",
+    transferDescription: "Перевод по реквизитам для оплаты",
+    toPay: "К оплате",
+    sending: "Отправляем заказ...",
+    submit: "Оформить заказ",
+    footnote:
+      "Нажимая кнопку, вы отправляете данные для оформления заказа.",
+    tracking: "Статус вашего заказа",
+    currentStatus: "Текущий статус:",
+    deliveredThanks: "Спасибо за заказ! Будем рады видеть вас снова.",
+    trackingError:
+      "Не удалось обновить статус. Повторная проверка через 5 секунд.",
+    addProducts: "Сначала добавьте товары в корзину.",
+    invalidPhone: "Введите полный номер телефона в формате +998.",
+    enterAddress: "Укажите адрес доставки.",
+    sendError: "Не удалось отправить заказ. Попробуйте ещё раз.",
+    trackingMissing:
+      "Заказ отправлен, но данные отслеживания не получены. Свяжитесь с нами для уточнения статуса.",
+    orderSent: "Заказ отправлен! Ниже вы можете отслеживать его статус.",
+    statusUpdated: "Статус обновлён",
+    new: "Ожидает подтверждения",
+    accepted: "Заказ принят",
+    preparing: "Готовится",
+    courier: "Передан курьеру",
+    delivered: "Доставлен",
+    footer: "Свежая выпечка, созданная с любовью.",
+    language: "Язык сайта",
   },
-  {
-    id: "card",
-    title: "Картой при получении",
-    description: "Оплата картой при получении заказа",
+  uz: {
+    home: "Bosh sahifa",
+    catalog: "Mahsulotlar",
+    order: "Buyurtma",
+    cart: "Savat",
+    eyebrow: "YANGI PISHIRILGAN · MEHR BILAN",
+    hero1: "Kuningizga",
+    hero2: "o‘zgacha ta’m",
+    hero3: "bag‘ishlaymiz",
+    heroDescription:
+      "Siz va yaqinlaringiz uchun uy pishiriqlari, nafis shirinliklar va yoqimli lahzalar.",
+    chooseDessert: "Shirinlik tanlash",
+    made: "TAYYORLANDI",
+    withLove: "mehr bilan",
+    forYou: "SIZ UCHUN",
+    fresh: "Yangi pishiriqlar",
+    freshDescription: "Sifatga e’tibor bilan tayyorlaymiz",
+    love: "Mehr bilan",
+    loveDescription: "Har bir detalga e’tibor",
+    convenient: "Qulay buyurtma",
+    convenientDescription: "Yetkazib berish yoki olib ketish",
+    collection: "BIZNING TO‘PLAM",
+    chooseSweet: "Shirinligingizni tanlang",
+    collectionDescription:
+      "Yoqimli kun yoki alohida bayram uchun sevimli shirinligingizni tanlang.",
+    dessertCount: "ta shirinlik",
+    addToCart: "Qo‘shish",
+    cartTitle: "Savatingiz",
+    pieces: "dona",
+    emptyCart: "Savatingiz hozircha bo‘sh. Katalogdan shirinlik tanlang.",
+    total: "Jami",
+    orderEyebrow: "SIZNING SHIRIN BUYURTMANGIZ",
+    orderTitle: "Mazali lahzalar siz uchun",
+    orderDescription:
+      "Ma’lumotlaringizni kiriting, yetkazib berish va to‘lov usulini tanlang. Buyurtmani tasdiqlash uchun siz bilan bog‘lanamiz.",
+    contact: "Aloqa ma’lumotlari",
+    contactDescription: "Siz bilan qanday bog‘lanamiz?",
+    yourName: "Ismingiz",
+    namePlaceholder: "Ismingizni kiriting",
+    phone: "Telefon raqami",
+    deliveryMethod: "Qabul qilish usuli",
+    deliveryDescription: "Qaysi usul sizga qulay?",
+    delivery: "Yetkazib berish",
+    deliveryDetails: "Ko‘rsatilgan manzilga",
+    pickup: "O‘zingiz olib ketasiz",
+    pickupDetails: "Buyurtmani o‘zingiz olib ketasiz",
+    address: "Yetkazib berish manzili",
+    addressPlaceholder: "Ko‘cha, uy, xonadon",
+    comment: "Buyurtma uchun izoh",
+    optional: "Ixtiyoriy",
+    commentPlaceholder: "Buyurtma bo‘yicha istaklaringiz...",
+    paymentMethod: "To‘lov usuli",
+    paymentDescription: "O‘zingizga qulay usulni tanlang",
+    cash: "Naqd pul",
+    cashDescription: "Buyurtmani olganda naqd to‘lov",
+    card: "Karta orqali",
+    cardDescription: "Buyurtmani olganda karta orqali to‘lov",
+    transfer: "Kartaga pul o‘tkazish",
+    transferDescription: "To‘lov uchun karta rekvizitlari orqali o‘tkazma",
+    toPay: "To‘lanadi",
+    sending: "Buyurtma yuborilmoqda...",
+    submit: "Buyurtma berish",
+    footnote:
+      "Tugmani bosish orqali buyurtmani rasmiylashtirish uchun ma’lumotlarni yuborasiz.",
+    tracking: "Buyurtmangiz holati",
+    currentStatus: "Joriy holati:",
+    deliveredThanks:
+      "Buyurtmangiz uchun rahmat! Sizni yana kutib qolamiz.",
+    trackingError:
+      "Holatni yangilab bo‘lmadi. 5 soniyadan so‘ng qayta tekshiriladi.",
+    addProducts: "Avval savatga mahsulot qo‘shing.",
+    invalidPhone: "+998 formatida to‘liq telefon raqamini kiriting.",
+    enterAddress: "Yetkazib berish manzilini kiriting.",
+    sendError: "Buyurtmani yuborib bo‘lmadi. Qayta urinib ko‘ring.",
+    trackingMissing:
+      "Buyurtma yuborildi, lekin kuzatish ma’lumotlari olinmadi. Holatni aniqlash uchun biz bilan bog‘laning.",
+    orderSent:
+      "Buyurtma yuborildi! Quyida uning holatini kuzatishingiz mumkin.",
+    statusUpdated: "Holat yangilandi",
+    new: "Tasdiqlanishi kutilmoqda",
+    accepted: "Buyurtma qabul qilindi",
+    preparing: "Tayyorlanmoqda",
+    courier: "Kuryerga topshirildi",
+    delivered: "Yetkazib berildi",
+    footer: "Mehr bilan tayyorlangan yangi pishiriqlar.",
+    language: "Sayt tili",
   },
-  {
-    id: "transfer",
-    title: "Перевод на карту",
-    description: "Перевод по реквизитам для оплаты",
-  },
-];
+} as const;
 
-const paymentLabels: Record<Payment, string> = {
-  cash: "Наличными",
-  card: "Картой при получении",
-  transfer: "Перевод на карту",
+const productTranslations = {
+  ru: {
+    1: {
+      name: "Авторский торт",
+      description: "Нежный десерт для особенных моментов",
+    },
+    2: {
+      name: "Нежные пирожные",
+      description: "Свежие пирожные с нежным кремом",
+    },
+    3: {
+      name: "Домашнее печенье",
+      description: "Рассыпчатое печенье к чаю",
+    },
+  },
+  uz: {
+    1: {
+      name: "Maxsus tort",
+      description: "Unutilmas lahzalar uchun nafis shirinlik",
+    },
+    2: {
+      name: "Nafis pirojniylar",
+      description: "Yumshoq kremli yangi pirojniylar",
+    },
+    3: {
+      name: "Uy pechenyesi",
+      description: "Choy uchun mazali, uvalanuvchan pechenye",
+    },
+  },
 };
 
-const statusLabels: Record<string, string> = {
-  new: "Ожидает подтверждения",
-  accepted: "Заказ принят",
-  preparing: "Готовится",
-  courier: "Передан курьеру",
-  delivered: "Доставлен",
+const statusLabels: Record<Language, Record<string, string>> = {
+  ru: {
+    new: "Ожидает подтверждения",
+    accepted: "Заказ принят",
+    preparing: "Готовится",
+    courier: "Передан курьеру",
+    delivered: "Доставлен",
+  },
+  uz: {
+    new: "Tasdiqlanishi kutilmoqda",
+    accepted: "Buyurtma qabul qilindi",
+    preparing: "Tayyorlanmoqda",
+    courier: "Kuryerga topshirildi",
+    delivered: "Yetkazib berildi",
+  },
 };
 
-function formatPrice(price: number) {
-  return `${price.toLocaleString("ru-RU")} сум`;
+function formatPrice(price: number, language: Language) {
+  return `${price.toLocaleString(language === "ru" ? "ru-RU" : "uz-UZ")} so‘m`;
 }
 
 function PaymentIcon({ type }: { type: Payment }) {
@@ -122,6 +312,9 @@ function PaymentIcon({ type }: { type: Payment }) {
 }
 
 export default function Home() {
+  const [language, setLanguage] = useState<Language>("ru");
+  const [languageReady, setLanguageReady] = useState(false);
+
   const [cart, setCart] = useState<CartItem[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+998 ");
@@ -132,31 +325,60 @@ export default function Home() {
   const [sending, setSending] = useState(false);
   const [notice, setNotice] = useState("");
   const [noticeError, setNoticeError] = useState(false);
-
   const [trackedOrder, setTrackedOrder] = useState<TrackedOrder | null>(null);
   const [trackingError, setTrackingError] = useState("");
+
+  const t = translations[language];
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("qulupnay-language");
+      if (saved === "ru" || saved === "uz") {
+        setLanguage(saved);
+      }
+    } catch {
+      // Sayt tili saqlanmasa ham ishlashda davom etadi.
+    }
+    setLanguageReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!languageReady) return;
+    try {
+      localStorage.setItem("qulupnay-language", language);
+    } catch {
+      // Tilni saqlash imkoniyati bo‘lmasa, joriy tanlov ishlaydi.
+    }
+  }, [language, languageReady]);
+
+  const localizedProducts = useMemo(
+    () =>
+      products.map((product) => ({
+        ...product,
+        ...productTranslations[language][product.id],
+      })),
+    [language]
+  );
 
   const cartItems = useMemo(
     () =>
       cart
         .map((item) => {
-          const product = products.find((p) => p.id === item.id);
+          const product = localizedProducts.find((p) => p.id === item.id);
           return product ? { ...product, quantity: item.quantity } : null;
         })
         .filter(
           (item): item is Product & { quantity: number } => item !== null
         ),
-    [cart]
+    [cart, localizedProducts]
   );
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
-  // Проверяем статус заказа каждые 5 секунд.
   useEffect(() => {
     if (!trackedOrder) return;
 
@@ -178,7 +400,7 @@ export default function Home() {
         const data = await response.json();
 
         if (!response.ok || !data.ok) {
-          throw new Error(data.error || "Не удалось проверить статус");
+          throw new Error("Status error");
         }
 
         if (active) {
@@ -191,24 +413,15 @@ export default function Home() {
               ...current,
               status: data.status,
               statusLabel:
-                data.statusLabel ||
-                statusLabels[data.status] ||
-                "Статус обновлён",
+                statusLabels[language][data.status] || t.statusUpdated,
             };
           });
-
           setTrackingError("");
         }
       } catch {
-        if (active) {
-          setTrackingError(
-            "Не удалось обновить статус. Повторная проверка через 5 секунд."
-          );
-        }
+        if (active) setTrackingError(t.trackingError);
       } finally {
-        if (active) {
-          timer = setTimeout(checkStatus, 5000);
-        }
+        if (active) timer = setTimeout(checkStatus, 5000);
       }
     };
 
@@ -218,13 +431,18 @@ export default function Home() {
       active = false;
       if (timer) clearTimeout(timer);
     };
-  }, [trackedOrder?.orderId, trackedOrder?.trackingToken]);
+  }, [
+    trackedOrder?.orderId,
+    trackedOrder?.trackingToken,
+    language,
+    t.trackingError,
+    t.statusUpdated,
+  ]);
 
   function addToCart(id: number) {
     setNotice("");
     setCart((current) => {
       const existing = current.find((item) => item.id === id);
-
       if (existing) {
         return current.map((item) =>
           item.id === id
@@ -232,7 +450,6 @@ export default function Home() {
             : item
         );
       }
-
       return [...current, { id, quantity: 1 }];
     });
   }
@@ -258,7 +475,6 @@ export default function Home() {
     national = national.slice(0, 9);
 
     let formatted = "+998";
-
     if (national.length > 0) formatted += " " + national.slice(0, 2);
     if (national.length > 2) formatted += " " + national.slice(2, 5);
     if (national.length > 5) formatted += " " + national.slice(5, 7);
@@ -273,22 +489,28 @@ export default function Home() {
     setNoticeError(false);
 
     if (cartItems.length === 0) {
-      setNotice("Сначала добавьте товары в корзину.");
+      setNotice(t.addProducts);
       setNoticeError(true);
       return;
     }
 
     if (phone.replace(/\D/g, "").length !== 12) {
-      setNotice("Введите полный номер телефона в формате +998.");
+      setNotice(t.invalidPhone);
       setNoticeError(true);
       return;
     }
 
     if (delivery === "delivery" && !address.trim()) {
-      setNotice("Укажите адрес доставки.");
+      setNotice(t.enterAddress);
       setNoticeError(true);
       return;
     }
+
+    const paymentLabels: Record<Payment, string> = {
+      cash: t.cash,
+      card: t.card,
+      transfer: t.transfer,
+    };
 
     setSending(true);
 
@@ -315,14 +537,14 @@ export default function Home() {
 
       if (!response.ok || data.ok === false) {
         throw new Error(
-          data.error || "Не удалось отправить заказ. Попробуйте ещё раз."
+          language === "ru"
+            ? data.error || t.sendError
+            : t.sendError
         );
       }
 
       if (!data.orderId || !data.trackingToken) {
-        throw new Error(
-          "Заказ отправлен, но данные отслеживания не получены. Свяжитесь с нами для уточнения статуса."
-        );
+        throw new Error(t.trackingMissing);
       }
 
       setTrackedOrder({
@@ -330,12 +552,10 @@ export default function Home() {
         trackingToken: data.trackingToken,
         status: data.status ?? "new",
         statusLabel:
-          data.statusLabel ?? "Ожидает подтверждения",
+          statusLabels[language][data.status ?? "new"] || t.new,
       });
 
-      setNotice(
-        "Заказ отправлен! Ниже вы можете отслеживать его статус."
-      );
+      setNotice(t.orderSent);
       setNoticeError(false);
       setCart([]);
       setName("");
@@ -346,9 +566,7 @@ export default function Home() {
       setDelivery("delivery");
     } catch (error) {
       setNotice(
-        error instanceof Error
-          ? error.message
-          : "Ошибка отправки заказа. Попробуйте ещё раз."
+        error instanceof Error ? error.message : t.sendError
       );
       setNoticeError(true);
     } finally {
@@ -364,78 +582,98 @@ export default function Home() {
           <span className="brand-subtitle">· BAKERY ·</span>
         </a>
 
-        <nav className="main-nav" aria-label="Основная навигация">
-          <a href="#home">Главная</a>
-          <a href="#catalog">Каталог</a>
-          <a href="#order">Заказать</a>
+        <nav className="main-nav" aria-label={t.home}>
+          <a href="#home">{t.home}</a>
+          <a href="#catalog">{t.catalog}</a>
+          <a href="#order">{t.order}</a>
         </nav>
 
-        <a className="header-cart" href="#order">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 8H6" />
-            <circle cx="10" cy="20" r="1" />
-            <circle cx="18" cy="20" r="1" />
-          </svg>
-          <span>Корзина</span>
-          <span className="cart-badge">{cartCount}</span>
-        </a>
+        <div className="header-actions">
+          <div className="language-switch" role="group" aria-label={t.language}>
+            <button
+              type="button"
+              className={`language-button ${language === "ru" ? "active" : ""}`}
+              onClick={() => setLanguage("ru")}
+              aria-pressed={language === "ru"}
+              aria-label="Русский язык"
+            >
+              🇷🇺 RU
+            </button>
+            <button
+              type="button"
+              className={`language-button ${language === "uz" ? "active" : ""}`}
+              onClick={() => setLanguage("uz")}
+              aria-pressed={language === "uz"}
+              aria-label="O‘zbek tili"
+            >
+              🇺🇿 UZ
+            </button>
+          </div>
+
+          <a className="header-cart" href="#order">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 8H6" />
+              <circle cx="10" cy="20" r="1" />
+              <circle cx="18" cy="20" r="1" />
+            </svg>
+            <span>{t.cart}</span>
+            <span className="cart-badge">{cartCount}</span>
+          </a>
+        </div>
       </header>
 
       <section className="hero" id="home">
         <div className="hero-content">
-          <p className="eyebrow">СВЕЖАЯ ВЫПЕЧКА · С ЗАБОТОЙ</p>
+          <p className="eyebrow">{t.eyebrow}</p>
           <h1>
-            Вкус, который
+            {t.hero1}
             <br />
-            делает день
+            {t.hero2}
             <br />
-            <span>особенным</span>
+            <span>{t.hero3}</span>
           </h1>
-          <p className="hero-description">
-            Домашняя выпечка, нежные десерты и сладкие моменты для вас и ваших
-            близких.
-          </p>
+          <p className="hero-description">{t.heroDescription}</p>
           <a className="button button-primary" href="#catalog">
-            Выбрать десерт <span aria-hidden="true">→</span>
+            {t.chooseDessert} <span aria-hidden="true">→</span>
           </a>
           <div className="hero-note">
             <span className="note-star">✦</span>
-            Свежеприготовленные десерты с любовью
+            {t.fresh} — {t.withLove}
           </div>
         </div>
 
         <div className="hero-visual">
           <div className="hero-image-frame">
-            <img src={products[0].image} alt="Красивый праздничный торт" />
+            <img src={products[0].image} alt={localizedProducts[0].name} />
           </div>
           <div className="hero-stamp">
-            <span>СДЕЛАНО</span>
-            <strong>с любовью</strong>
-            <span>ДЛЯ ВАС</span>
+            <span>{t.made}</span>
+            <strong>{t.withLove}</strong>
+            <span>{t.forYou}</span>
           </div>
         </div>
       </section>
 
-      <section className="features" aria-label="Наши преимущества">
+      <section className="features" aria-label={t.fresh}>
         <article className="feature">
           <span className="feature-symbol">✧</span>
           <div>
-            <h3>Свежая выпечка</h3>
-            <p>Готовим с заботой о качестве</p>
+            <h3>{t.fresh}</h3>
+            <p>{t.freshDescription}</p>
           </div>
         </article>
         <article className="feature">
           <span className="feature-symbol">♡</span>
           <div>
-            <h3>С любовью</h3>
-            <p>Внимание к каждой детали</p>
+            <h3>{t.love}</h3>
+            <p>{t.loveDescription}</p>
           </div>
         </article>
         <article className="feature">
           <span className="feature-symbol">⌂</span>
           <div>
-            <h3>Удобный заказ</h3>
-            <p>Доставка или самовывоз</p>
+            <h3>{t.convenient}</h3>
+            <p>{t.convenientDescription}</p>
           </div>
         </article>
       </section>
@@ -443,24 +681,28 @@ export default function Home() {
       <section className="catalog section" id="catalog">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">НАША КОЛЛЕКЦИЯ</p>
-            <h2>Выберите свою сладость</h2>
-            <p className="section-description">
-              Найдите любимый десерт для уютного дня или особенного события.
-            </p>
+            <p className="eyebrow">{t.collection}</p>
+            <h2>{t.chooseSweet}</h2>
+            <p className="section-description">{t.collectionDescription}</p>
           </div>
-          <span className="catalog-count">{products.length} десерта</span>
+          <span className="catalog-count">
+            {products.length} {t.dessertCount}
+          </span>
         </div>
 
         <div className="product-grid">
-          {products.map((product) => {
+          {localizedProducts.map((product) => {
             const quantity =
               cart.find((item) => item.id === product.id)?.quantity ?? 0;
 
             return (
               <article className="product-card" key={product.id}>
                 <div className="product-image">
-                  <img src={product.image} alt={product.name} loading="lazy" />
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    loading="lazy"
+                  />
                   <span className="product-number">
                     {String(product.id).padStart(2, "0")}
                   </span>
@@ -472,7 +714,7 @@ export default function Home() {
 
                   <div className="product-bottom">
                     <strong className="product-price">
-                      {formatPrice(product.price)}
+                      {formatPrice(product.price, language)}
                     </strong>
 
                     {quantity === 0 ? (
@@ -480,19 +722,19 @@ export default function Home() {
                         className="add-button"
                         type="button"
                         onClick={() => addToCart(product.id)}
-                        aria-label={`Добавить ${product.name} в корзину`}
+                        aria-label={`${t.addToCart}: ${product.name}`}
                       >
                         <span>+</span>
                       </button>
                     ) : (
                       <div
                         className="quantity-control"
-                        aria-label={`Количество: ${quantity}`}
+                        aria-label={`${t.cart}: ${quantity}`}
                       >
                         <button
                           type="button"
                           onClick={() => changeQuantity(product.id, -1)}
-                          aria-label="Уменьшить количество"
+                          aria-label="−"
                         >
                           −
                         </button>
@@ -501,7 +743,7 @@ export default function Home() {
                           type="button"
                           onClick={() => addToCart(product.id)}
                           disabled={quantity >= 50}
-                          aria-label="Увеличить количество"
+                          aria-label="+"
                         >
                           +
                         </button>
@@ -517,23 +759,18 @@ export default function Home() {
 
       <section className="order-section section" id="order">
         <div className="order-intro">
-          <p className="eyebrow">ВАШ СЛАДКИЙ ЗАКАЗ</p>
-          <h2>Пусть будет вкусно</h2>
-          <p>
-            Заполните данные, выберите способ получения и оплаты. Мы свяжемся
-            с вами для подтверждения заказа.
-          </p>
+          <p className="eyebrow">{t.orderEyebrow}</p>
+          <h2>{t.orderTitle}</h2>
+          <p>{t.orderDescription}</p>
 
           <div className="order-summary">
             <div className="summary-title">
-              <h3>Ваша корзина</h3>
-              <span>{cartCount} шт.</span>
+              <h3>{t.cartTitle}</h3>
+              <span>{cartCount} {t.pieces}</span>
             </div>
 
             {cartItems.length === 0 ? (
-              <p className="empty-cart">
-                Корзина пока пуста. Выберите десерт в каталоге.
-              </p>
+              <p className="empty-cart">{t.emptyCart}</p>
             ) : (
               <div className="cart-list">
                 {cartItems.map((item) => (
@@ -541,7 +778,7 @@ export default function Home() {
                     <div className="cart-item-info">
                       <strong>{item.name}</strong>
                       <span>
-                        {formatPrice(item.price)} × {item.quantity}
+                        {formatPrice(item.price, language)} × {item.quantity}
                       </span>
                     </div>
 
@@ -549,7 +786,7 @@ export default function Home() {
                       <button
                         type="button"
                         onClick={() => changeQuantity(item.id, -1)}
-                        aria-label={`Уменьшить количество: ${item.name}`}
+                        aria-label="−"
                       >
                         −
                       </button>
@@ -558,7 +795,7 @@ export default function Home() {
                         type="button"
                         onClick={() => addToCart(item.id)}
                         disabled={item.quantity >= 50}
-                        aria-label={`Увеличить количество: ${item.name}`}
+                        aria-label="+"
                       >
                         +
                       </button>
@@ -569,8 +806,8 @@ export default function Home() {
             )}
 
             <div className="summary-total">
-              <span>Итого</span>
-              <strong>{formatPrice(total)}</strong>
+              <span>{t.total}</span>
+              <strong>{formatPrice(total, language)}</strong>
             </div>
           </div>
         </div>
@@ -579,19 +816,19 @@ export default function Home() {
           <div className="form-heading">
             <span className="form-step">01</span>
             <div>
-              <h3>Контактные данные</h3>
-              <p>Как с вами связаться?</p>
+              <h3>{t.contact}</h3>
+              <p>{t.contactDescription}</p>
             </div>
           </div>
 
           <label className="field-label" htmlFor="customer-name">
-            Ваше имя
+            {t.yourName}
           </label>
           <input
             id="customer-name"
             name="name"
             type="text"
-            placeholder="Введите ваше имя"
+            placeholder={t.namePlaceholder}
             value={name}
             onChange={(event) => setName(event.target.value)}
             autoComplete="name"
@@ -599,7 +836,7 @@ export default function Home() {
           />
 
           <label className="field-label" htmlFor="customer-phone">
-            Номер телефона
+            {t.phone}
           </label>
           <input
             id="customer-phone"
@@ -618,16 +855,14 @@ export default function Home() {
           <div className="form-heading">
             <span className="form-step">02</span>
             <div>
-              <h3>Способ получения</h3>
-              <p>Как вам будет удобнее?</p>
+              <h3>{t.deliveryMethod}</h3>
+              <p>{t.deliveryDescription}</p>
             </div>
           </div>
 
           <div className="delivery-options">
             <label
-              className={`delivery-choice ${
-                delivery === "delivery" ? "selected" : ""
-              }`}
+              className={`delivery-choice ${delivery === "delivery" ? "selected" : ""}`}
             >
               <input
                 type="radio"
@@ -644,16 +879,14 @@ export default function Home() {
                 </svg>
               </span>
               <span className="delivery-text">
-                <strong>Доставка</strong>
-                <small>До указанного адреса</small>
+                <strong>{t.delivery}</strong>
+                <small>{t.deliveryDetails}</small>
               </span>
               <span className="delivery-check" aria-hidden="true">✓</span>
             </label>
 
             <label
-              className={`delivery-choice ${
-                delivery === "pickup" ? "selected" : ""
-              }`}
+              className={`delivery-choice ${delivery === "pickup" ? "selected" : ""}`}
             >
               <input
                 type="radio"
@@ -668,8 +901,8 @@ export default function Home() {
                 </svg>
               </span>
               <span className="delivery-text">
-                <strong>Самовывоз</strong>
-                <small>Забрать самостоятельно</small>
+                <strong>{t.pickup}</strong>
+                <small>{t.pickupDetails}</small>
               </span>
               <span className="delivery-check" aria-hidden="true">✓</span>
             </label>
@@ -678,13 +911,13 @@ export default function Home() {
           {delivery === "delivery" && (
             <>
               <label className="field-label" htmlFor="customer-address">
-                Адрес доставки
+                {t.address}
               </label>
               <input
                 id="customer-address"
                 name="address"
                 type="text"
-                placeholder="Улица, дом, квартира"
+                placeholder={t.addressPlaceholder}
                 value={address}
                 onChange={(event) => setAddress(event.target.value)}
                 autoComplete="street-address"
@@ -694,13 +927,13 @@ export default function Home() {
           )}
 
           <label className="field-label" htmlFor="customer-comment">
-            Комментарий к заказу
-            <span className="optional-label">Необязательно</span>
+            {t.comment}
+            <span className="optional-label">{t.optional}</span>
           </label>
           <textarea
             id="customer-comment"
             name="comment"
-            placeholder="Пожелания к заказу..."
+            placeholder={t.commentPlaceholder}
             value={comment}
             onChange={(event) => setComment(event.target.value)}
             rows={3}
@@ -711,19 +944,33 @@ export default function Home() {
           <div className="form-heading">
             <span className="form-step">03</span>
             <div>
-              <h3>Способ оплаты</h3>
-              <p>Выберите удобный вариант</p>
+              <h3>{t.paymentMethod}</h3>
+              <p>{t.paymentDescription}</p>
             </div>
           </div>
 
           <div className="payment-section">
             <div className="payment-options">
-              {paymentOptions.map((option) => (
+              {([
+                {
+                  id: "cash" as Payment,
+                  title: t.cash,
+                  description: t.cashDescription,
+                },
+                {
+                  id: "card" as Payment,
+                  title: t.card,
+                  description: t.cardDescription,
+                },
+                {
+                  id: "transfer" as Payment,
+                  title: t.transfer,
+                  description: t.transferDescription,
+                },
+              ]).map((option) => (
                 <label
                   key={option.id}
-                  className={`payment-choice ${
-                    payment === option.id ? "selected" : ""
-                  }`}
+                  className={`payment-choice ${payment === option.id ? "selected" : ""}`}
                 >
                   <input
                     type="radio"
@@ -751,8 +998,8 @@ export default function Home() {
           </div>
 
           <div className="checkout-total">
-            <span>К оплате</span>
-            <strong>{formatPrice(total)}</strong>
+            <span>{t.toPay}</span>
+            <strong>{formatPrice(total, language)}</strong>
           </div>
 
           <button
@@ -760,19 +1007,15 @@ export default function Home() {
             type="submit"
             disabled={sending || cartItems.length === 0}
           >
-            {sending ? "Отправляем заказ..." : "Оформить заказ"}
+            {sending ? t.sending : t.submit}
             {!sending && <span aria-hidden="true">→</span>}
           </button>
 
-          <p className="form-footnote">
-            Нажимая кнопку, вы отправляете данные для оформления заказа.
-          </p>
+          <p className="form-footnote">{t.footnote}</p>
 
           {notice && (
             <div
-              className={`order-notice ${
-                noticeError ? "order-notice-error" : "order-notice-success"
-              }`}
+              className={`order-notice ${noticeError ? "order-notice-error" : "order-notice-success"}`}
               role="status"
             >
               {notice}
@@ -784,14 +1027,17 @@ export default function Home() {
               className="order-notice order-notice-success"
               aria-live="polite"
             >
-              <strong>Отслеживание заказа</strong>
+              <strong>{t.tracking}</strong>
               <p>
-                Текущий статус:{" "}
-                <strong>{trackedOrder.statusLabel}</strong>
+                {t.currentStatus}{" "}
+                <strong>
+                  {statusLabels[language][trackedOrder.status] ||
+                    trackedOrder.statusLabel}
+                </strong>
               </p>
               {trackingError && <p>{trackingError}</p>}
               {trackedOrder.status === "delivered" && (
-                <p>Спасибо за заказ! Будем рады видеть вас снова.</p>
+                <p>{t.deliveredThanks}</p>
               )}
             </div>
           )}
@@ -803,7 +1049,7 @@ export default function Home() {
           <span className="brand-name">Qulupnay.uz</span>
           <span className="brand-subtitle">· BAKERY ·</span>
         </a>
-        <p>Свежая выпечка, созданная с любовью.</p>
+        <p>{t.footer}</p>
         <span className="footer-copy">
           © {new Date().getFullYear()} Qulupnay.uz · BAKERY
         </span>
