@@ -135,7 +135,6 @@ const translations = {
     preparing: "Готовится",
     courier: "Передан курьеру",
     delivered: "Доставлен",
-    footer: "Свежая выпечка, созданная с любовью.",
     language: "Язык сайта",
   },
   uz: {
@@ -219,7 +218,6 @@ const translations = {
     preparing: "Tayyorlanmoqda",
     courier: "Kuryerga topshirildi",
     delivered: "Yetkazib berildi",
-    footer: "Mehr bilan tayyorlangan yangi pishiriqlar.",
     language: "Sayt tili",
   },
 } as const;
@@ -330,17 +328,18 @@ export default function Home() {
         setLanguage(saved);
       }
     } catch {
-      // Sayt tili saqlanmasa ham ishlashda davom etadi.
+      // Tilni saqlash ishlamasa ham sayt ishlaydi.
     }
     setLanguageReady(true);
   }, []);
 
   useEffect(() => {
     if (!languageReady) return;
+
     try {
       localStorage.setItem("qulupnay-language", language);
     } catch {
-      // Tilni saqlash imkoniyati bo‘lmasa, joriy tanlov ishlaydi.
+      // Joriy til tanlovi ishlashda davom etadi.
     }
   }, [language, languageReady]);
 
@@ -367,6 +366,7 @@ export default function Home() {
   );
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -409,6 +409,7 @@ export default function Home() {
                 statusLabels[language][data.status] || t.statusUpdated,
             };
           });
+
           setTrackingError("");
         }
       } catch {
@@ -434,8 +435,10 @@ export default function Home() {
 
   function addToCart(id: number) {
     setNotice("");
+
     setCart((current) => {
       const existing = current.find((item) => item.id === id);
+
       if (existing) {
         return current.map((item) =>
           item.id === id
@@ -443,6 +446,7 @@ export default function Home() {
             : item
         );
       }
+
       return [...current, { id, quantity: 1 }];
     });
   }
@@ -468,6 +472,7 @@ export default function Home() {
     national = national.slice(0, 9);
 
     let formatted = "+998";
+
     if (national.length > 0) formatted += " " + national.slice(0, 2);
     if (national.length > 2) formatted += " " + national.slice(2, 5);
     if (national.length > 5) formatted += " " + national.slice(5, 7);
@@ -530,9 +535,7 @@ export default function Home() {
 
       if (!response.ok || data.ok === false) {
         throw new Error(
-          language === "ru"
-            ? data.error || t.sendError
-            : t.sendError
+          language === "ru" ? data.error || t.sendError : t.sendError
         );
       }
 
@@ -582,7 +585,11 @@ export default function Home() {
         </nav>
 
         <div className="header-actions">
-          <div className="language-switch" role="group" aria-label={t.language}>
+          <div
+            className="language-switch"
+            role="group"
+            aria-label={t.language}
+          >
             <button
               type="button"
               className={`language-button ${language === "ru" ? "active" : ""}`}
@@ -592,6 +599,7 @@ export default function Home() {
             >
               🇷🇺 RU
             </button>
+
             <button
               type="button"
               className={`language-button ${language === "uz" ? "active" : ""}`}
@@ -618,6 +626,7 @@ export default function Home() {
       <section className="hero" id="home">
         <div className="hero-content">
           <p className="eyebrow">{t.eyebrow}</p>
+
           <h1>
             {t.hero1}
             <br />
@@ -625,10 +634,13 @@ export default function Home() {
             <br />
             <span>{t.hero3}</span>
           </h1>
+
           <p className="hero-description">{t.heroDescription}</p>
+
           <a className="button button-primary" href="#catalog">
             {t.chooseDessert} <span aria-hidden="true">→</span>
           </a>
+
           <div className="hero-note">
             <span className="note-star">✦</span>
             {t.fresh}
@@ -650,6 +662,7 @@ export default function Home() {
             <p>{t.freshDescription}</p>
           </div>
         </article>
+
         <article className="feature">
           <span className="feature-symbol">♡</span>
           <div>
@@ -657,6 +670,7 @@ export default function Home() {
             <p>{t.loveDescription}</p>
           </div>
         </article>
+
         <article className="feature">
           <span className="feature-symbol">⌂</span>
           <div>
@@ -673,6 +687,7 @@ export default function Home() {
             <h2>{t.chooseSweet}</h2>
             <p className="section-description">{t.collectionDescription}</p>
           </div>
+
           <span className="catalog-count">
             {products.length} {t.dessertCount}
           </span>
@@ -726,7 +741,9 @@ export default function Home() {
                         >
                           −
                         </button>
+
                         <span>{quantity}</span>
+
                         <button
                           type="button"
                           onClick={() => addToCart(product.id)}
@@ -754,7 +771,9 @@ export default function Home() {
           <div className="order-summary">
             <div className="summary-title">
               <h3>{t.cartTitle}</h3>
-              <span>{cartCount} {t.pieces}</span>
+              <span>
+                {cartCount} {t.pieces}
+              </span>
             </div>
 
             {cartItems.length === 0 ? (
@@ -778,7 +797,9 @@ export default function Home() {
                       >
                         −
                       </button>
+
                       <span>{item.quantity}</span>
+
                       <button
                         type="button"
                         onClick={() => addToCart(item.id)}
@@ -812,6 +833,7 @@ export default function Home() {
           <label className="field-label" htmlFor="customer-name">
             {t.yourName}
           </label>
+
           <input
             id="customer-name"
             name="name"
@@ -826,6 +848,7 @@ export default function Home() {
           <label className="field-label" htmlFor="customer-phone">
             {t.phone}
           </label>
+
           <input
             id="customer-phone"
             name="phone"
@@ -859,6 +882,7 @@ export default function Home() {
                 checked={delivery === "delivery"}
                 onChange={() => setDelivery("delivery")}
               />
+
               <span className="delivery-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
                   <path d="M3 6h11v11H3zM14 10h4l3 3v4h-7z" />
@@ -866,11 +890,15 @@ export default function Home() {
                   <circle cx="18" cy="19" r="2" />
                 </svg>
               </span>
+
               <span className="delivery-text">
                 <strong>{t.delivery}</strong>
                 <small>{t.deliveryDetails}</small>
               </span>
-              <span className="delivery-check" aria-hidden="true">✓</span>
+
+              <span className="delivery-check" aria-hidden="true">
+                ✓
+              </span>
             </label>
 
             <label
@@ -883,16 +911,21 @@ export default function Home() {
                 checked={delivery === "pickup"}
                 onChange={() => setDelivery("pickup")}
               />
+
               <span className="delivery-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
                   <path d="M3 10h18l-2-6H5zM5 10v10h14V10M9 20v-6h6v6" />
                 </svg>
               </span>
+
               <span className="delivery-text">
                 <strong>{t.pickup}</strong>
                 <small>{t.pickupDetails}</small>
               </span>
-              <span className="delivery-check" aria-hidden="true">✓</span>
+
+              <span className="delivery-check" aria-hidden="true">
+                ✓
+              </span>
             </label>
           </div>
 
@@ -901,6 +934,7 @@ export default function Home() {
               <label className="field-label" htmlFor="customer-address">
                 {t.address}
               </label>
+
               <input
                 id="customer-address"
                 name="address"
@@ -918,6 +952,7 @@ export default function Home() {
             {t.comment}
             <span className="optional-label">{t.optional}</span>
           </label>
+
           <textarea
             id="customer-comment"
             name="comment"
@@ -939,23 +974,25 @@ export default function Home() {
 
           <div className="payment-section">
             <div className="payment-options">
-              {([
-                {
-                  id: "cash" as Payment,
-                  title: t.cash,
-                  description: t.cashDescription,
-                },
-                {
-                  id: "card" as Payment,
-                  title: t.card,
-                  description: t.cardDescription,
-                },
-                {
-                  id: "transfer" as Payment,
-                  title: t.transfer,
-                  description: t.transferDescription,
-                },
-              ]).map((option) => (
+              {(
+                [
+                  {
+                    id: "cash" as Payment,
+                    title: t.cash,
+                    description: t.cashDescription,
+                  },
+                  {
+                    id: "card" as Payment,
+                    title: t.card,
+                    description: t.cardDescription,
+                  },
+                  {
+                    id: "transfer" as Payment,
+                    title: t.transfer,
+                    description: t.transferDescription,
+                  },
+                ]
+              ).map((option) => (
                 <label
                   key={option.id}
                   className={`payment-choice ${payment === option.id ? "selected" : ""}`}
@@ -1016,6 +1053,7 @@ export default function Home() {
               aria-live="polite"
             >
               <strong>{t.tracking}</strong>
+
               <p>
                 {t.currentStatus}{" "}
                 <strong>
@@ -1023,7 +1061,9 @@ export default function Home() {
                     trackedOrder.statusLabel}
                 </strong>
               </p>
+
               {trackingError && <p>{trackingError}</p>}
+
               {trackedOrder.status === "delivered" && (
                 <p>{t.deliveredThanks}</p>
               )}
@@ -1037,7 +1077,7 @@ export default function Home() {
           <span className="brand-name">Qulupnay.uz</span>
           <span className="brand-subtitle">· BAKERY ·</span>
         </a>
-        <p>{t.footer}</p>
+
         <span className="footer-copy">
           © {new Date().getFullYear()} Qulupnay.uz · BAKERY
         </span>
