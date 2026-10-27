@@ -631,7 +631,7 @@ export default function Home() {
           </a>
           <div className="hero-note">
             <span className="note-star">✦</span>
-            {t.fresh} — {t.withLove}
+            {t.fresh}
           </div>
         </div>
 
