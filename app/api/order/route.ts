@@ -4,7 +4,7 @@ import { randomBytes } from "node:crypto";
 
 const PRODUCTS = {
   1: { name: "Nutella", price: 170000 },
-  2: { name: "Chocoberry", price: 150000 },
+  2: { name: "Chocoberry", price: 500000 },
   3: { name: "Милка", price: 150000 },
   4: { name: "Блинный торт", price: 200000 },
   5: { name: "Банан в шоколаде", price: 200000 },
