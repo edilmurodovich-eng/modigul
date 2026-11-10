@@ -1861,3 +1861,17 @@ textarea:focus-visible {
   object-fit: contain;
   flex-shrink: 0;
 }
+/* Логотип и название Modigul в одну линию */
+.site-header .brand {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3px;
+  width: fit-content;
+}
+
+.site-header .brand-name {
+  margin: 0;
+  white-space: nowrap;
+}
