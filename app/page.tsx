@@ -553,9 +553,10 @@ export default function Home() {
         <a className="brand" href="#home" aria-label="Modigul">
   <img
     src="/modigul-logo.png"
-    alt="Modigul"
-    className="w-12 h-12 object-contain shrink-0"
+    alt=""
+    className="h-14 w-auto object-contain"
   />
+  <span className="brand-name">Modigul</span>
 </a>
 
         <nav className="main-nav" aria-label={t.home}>
