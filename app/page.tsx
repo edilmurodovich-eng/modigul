@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Language = "ru" | "uz";
-type ProductId = 1 | 2 | 3;
+type ProductId = 1 | 2 | 3 | 4 | 5;
 type Delivery = "delivery" | "pickup";
 type Payment = "cash" | "card" | "transfer";
 
@@ -31,30 +31,40 @@ type TrackedOrder = {
 const products: Product[] = [
   {
     id: 1,
-    name: "Авторский торт",
-    description: "Нежный десерт для особенных моментов",
-    price: 180000,
-    image:
-      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85",
+    name: "Nutella",
+    description: "Нежный десерт с шоколадно-ореховым вкусом",
+    price: 170000,
+    image: "/products/Nutella.jpg",
   },
   {
     id: 2,
-    name: "Нежные пирожные",
-    description: "Свежие пирожные с нежным кремом",
-    price: 65000,
-    image:
-      "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=85",
+    name: "Chocoberry",
+    description: "Яркое сочетание шоколада и клубники",
+    price: 150000,
+    image: "/products/Chocoberry.jpg",
   },
   {
     id: 3,
-    name: "Домашнее печенье",
-    description: "Рассыпчатое печенье к чаю",
-    price: 45000,
-    image:
-      "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=85",
+    name: "Милка",
+    description: "Нежный молочный шоколадный десерт",
+    price: 150000,
+    image: "/products/Милка.jpg",
+  },
+  {
+    id: 4,
+    name: "Блинный торт",
+    description: "Нежный торт из тонких блинчиков",
+    price: 200000,
+    image: "/products/Блинный торт.jpg",
+  },
+  {
+    id: 5,
+    name: "Банан в шоколаде",
+    description: "Сочный банан в нежном шоколаде",
+    price: 200000,
+    image: "/products/Банан в шоколаде.jpg",
   },
 ];
-
 const translations = {
   ru: {
     home: "Главная",
@@ -225,30 +235,46 @@ const translations = {
 const productTranslations = {
   ru: {
     1: {
-      name: "Авторский торт",
-      description: "Нежный десерт для особенных моментов",
+      name: "Nutella",
+      description: "Нежный десерт с шоколадно-ореховым вкусом",
     },
     2: {
-      name: "Нежные пирожные",
-      description: "Свежие пирожные с нежным кремом",
+      name: "Chocoberry",
+      description: "Яркое сочетание шоколада и клубники",
     },
     3: {
-      name: "Домашнее печенье",
-      description: "Рассыпчатое печенье к чаю",
+      name: "Милка",
+      description: "Нежный молочный шоколадный десерт",
+    },
+    4: {
+      name: "Блинный торт",
+      description: "Нежный торт из тонких блинчиков",
+    },
+    5: {
+      name: "Банан в шоколаде",
+      description: "Сочный банан в нежном шоколаде",
     },
   },
   uz: {
     1: {
-      name: "Maxsus tort",
-      description: "Unutilmas lahzalar uchun nafis shirinlik",
+      name: "Nutella",
+      description: "Shokolad va yong‘oq ta’miga ega nafis shirinlik",
     },
     2: {
-      name: "Nafis pirojniylar",
-      description: "Yumshoq kremli yangi pirojniylar",
+      name: "Chocoberry",
+      description: "Shokolad va qulupnayning ajoyib uyg‘unligi",
     },
     3: {
-      name: "Uy pechenyesi",
-      description: "Choy uchun mazali, uvalanuvchan pechenye",
+      name: "Milka",
+      description: "Nafis sutli shokoladli shirinlik",
+    },
+    4: {
+      name: "Blinli tort",
+      description: "Yupqa blinchiklardan tayyorlangan nafis tort",
+    },
+    5: {
+      name: "Shokoladdagi banan",
+      description: "Nafis shokolad bilan qoplangan mazali banan",
     },
   },
 };
