@@ -1855,9 +1855,9 @@ textarea:focus-visible {
 /* Размер логотипа Modigul в шапке */
 .site-header .brand img {
   display: block;
-  width: 192px !important;
-  height: 192px !important;
-  max-width: 192px;
+  width: 72px !important;
+  height: 72px !important;
+  max-width: 72px;
   object-fit: contain;
   flex-shrink: 0;
 }
