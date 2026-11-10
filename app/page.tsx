@@ -40,7 +40,7 @@ const products: Product[] = [
     id: 2,
     name: "Chocoberry",
     description: "Яркое сочетание шоколада и клубники",
-    price: 150000,
+    price: 500000,
     image: "/products/Chocoberry.jpg",
   },
   {
