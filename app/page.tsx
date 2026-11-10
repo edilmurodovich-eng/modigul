@@ -550,10 +550,13 @@ export default function Home() {
   return (
     <main>
       <header className="site-header">
-        <a className="brand" href="#home" aria-label="Qulupnay.uz Bakery">
-          <span className="brand-name">Qulupnay.uz</span>
-          <span className="brand-subtitle">· BAKERY ·</span>
-        </a>
+        <a className="brand" href="#home" aria-label="Modigul">
+  <img
+    src="/modigul-logo.png"
+    alt="Modigul"
+    className="h-14 w-auto object-contain"
+  />
+</a>
 
         <nav className="main-nav" aria-label={t.home}>
           <a href="#home">{t.home}</a>
