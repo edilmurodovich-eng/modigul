@@ -2,15 +2,16 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
+
 export const metadata: Metadata = {
-  title: "Qulupnay.uz — Клубника в шоколаде",
+  title: "Modigul — Премиальные десерты",
   description:
-    "Клубника в шоколаде и премиальные десерты в Узбекистане.",
+    "Премиальные десерты и клубника в шоколаде от Modigul.",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Qulupnay",
+    title: "Modigul",
   },
   icons: {
     icon: [
