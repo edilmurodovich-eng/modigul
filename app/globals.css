@@ -1875,3 +1875,29 @@ textarea:focus-visible {
   margin: 0;
   white-space: nowrap;
 }
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.footer-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.footer-social-link:hover {
+  opacity: 0.75;
+  transform: translateY(-2px);
+}
+
+.footer-owner {
+  margin: 12px 0 0;
+  text-align: center;
+  color: var(--gold);
+  font-size: 14px;
+}
