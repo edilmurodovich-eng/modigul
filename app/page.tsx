@@ -554,7 +554,7 @@ export default function Home() {
   <img
     src="/modigul-logo.png"
     alt="Modigul"
-    className="h-10 w-auto max-w-[140px] object-contain"
+    className="w-12 h-12 object-contain shrink-0"
   />
 </a>
 
