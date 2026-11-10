@@ -322,7 +322,7 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("qulupnay-language");
+      const saved = localStorage.getItem("modigul-language");
       if (saved === "ru" || saved === "uz") setLanguage(saved);
     } catch {
       // Saqlash mavjud bo‘lmasa ham sayt ishlaydi.
@@ -1010,21 +1010,21 @@ export default function Home() {
       </section>
 
       <footer className="site-footer">
-        <a className="brand footer-brand" href="#home">
-          <span className="brand-name">Qulupnay.uz</span>
-          <span className="brand-subtitle">· BAKERY ·</span>
-        </a>
+        <a className="brand footer-brand" href="#home" aria-label="Modigul">
+  <span className="brand-name">Modigul</span>
+  <span className="brand-subtitle">· BAKERY ·</span>
+</a>
 
         <span className="footer-copy">
-          © {new Date().getFullYear()} Qulupnay.uz · BAKERY
+          © {new Date().getFullYear()} Modigul · BAKERY
         </span>
 <div className="copyright-owner">
   <span>Правообладатель: </span>
   <a
-    href="https://t.me/qulupnay_bakery"
+    href="https://t.me/Modigulproduct"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="Qulupnay Bakery в Telegram"
+    aria-label="Modigul в Telegram"
   >
     <svg
       viewBox="0 0 24 24"
@@ -1035,7 +1035,7 @@ export default function Home() {
     >
       <path d="M21.8 4.6 18.7 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6.1 13.6l-5-1.6c-1.1-.3-1.1-1.1.2-1.6L20.7 3c.9-.3 1.6.2 1.1 1.6Z" />
     </svg>
-    <span>Qulupnay Bakery</span>
+    <span>Modigul</span>
   </a>
 </div>
 
