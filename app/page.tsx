@@ -1009,37 +1009,38 @@ export default function Home() {
         </form>
       </section>
 
-      <footer className="site-footer">
-        <a className="brand footer-brand" href="#home" aria-label="Modigul">
-  <span className="brand-name">Modigul</span>
-  <span className="brand-subtitle">· BAKERY ·</span>
-</a>
-
-        <span className="footer-copy">
-          © {new Date().getFullYear()} Modigul · BAKERY
-        </span>
-<div className="copyright-owner">
-  <span>Правообладатель: </span>
-  <a
-    href="https://t.me/Modigulproduct"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Modigul в Telegram"
-  >
-    <svg
-      viewBox="0 0 24 24"
-      width="18"
-      height="18"
-      fill="currentColor"
-      aria-hidden="true"
+      
+<footer className="site-footer">
+  <div className="footer-socials">
+    <a
+      href="https://t.me/Modigulproduct"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Modigul в Telegram"
+      className="footer-social-link"
     >
-      <path d="M21.8 4.6 18.7 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6.1 13.6l-5-1.6c-1.1-.3-1.1-1.1.2-1.6L20.7 3c.9-.3 1.6.2 1.1 1.6Z" />
-    </svg>
-    <span>Modigul</span>
-  </a>
-</div>
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+        <path d="M21.8 4.6 18.7 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6.1 13.6l-5-1.6c-1.1-.3-1.1-1.1.2-1.6L20.7 3c.9-.3 1.6.2 1.1 1.6Z" />
+      </svg>
+    </a>
 
-      </footer>
+    <a
+      href="https://www.instagram.com/modigul_official/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Modigul в Instagram"
+      className="footer-social-link"
+    >
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    </a>
+  </div>
+
+  <p className="footer-owner">Mohijamol Akmaljonovna</p>
+</footer>
     </main>
   );
 }
