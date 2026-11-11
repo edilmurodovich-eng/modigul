@@ -3,32 +3,13 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-async function redisGet(key: string) {
-  const url = process.env.KV_REST_API_URL;
-  const token = process.env.KV_REST_API_TOKEN;
-
-  if (!url || !token) {
-    throw new Error("KV не настроен");
-  }
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(["GET", key]),
-    cache: "no-store",
-  });
-
-  const result = await response.json();
-
-  if (!response.ok || result.error) {
-    throw new Error("Ошибка чтения заказа из KV");
-  }
-
-  return result.result;
-}
+const STATUS_LABELS: Record<string, string> = {
+  new: "Ожидает подтверждения",
+  accepted: "Заказ принят",
+  preparing: "Готовится",
+  courier: "Передан курьеру",
+  delivered: "Доставлен",
+};
 
 export async function GET(request: Request) {
   try {
@@ -48,31 +29,53 @@ export async function GET(request: Request) {
       );
     }
 
-    const saved = await redisGet(`bakery:order:${orderId}`);
+    const url = process.env.SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    if (typeof saved !== "string") {
+    if (!url || !key) {
+      throw new Error("Не настроен Supabase");
+    }
+
+    const response = await fetch(
+      `${url.replace(/\/$/, "")}/rest/v1/orders?order_id=eq.${encodeURIComponent(orderId)}&tracking_token=eq.${encodeURIComponent(trackingToken)}&select=order_id,status,created_at`,
+      {
+        method: "GET",
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      console.error(
+        "Supabase status error:",
+        await response.text()
+      );
+      throw new Error("Ошибка чтения заказа из Supabase");
+    }
+
+    const orders = await response.json();
+
+    if (!Array.isArray(orders) || orders.length === 0) {
       return NextResponse.json(
         { ok: false, error: "Заказ не найден" },
         { status: 404 }
       );
     }
 
-    const order = JSON.parse(saved);
-
-    if (order.trackingToken !== trackingToken) {
-      return NextResponse.json(
-        { ok: false, error: "Заказ не найден" },
-        { status: 404 }
-      );
-    }
+    const order = orders[0];
 
     return NextResponse.json(
       {
         ok: true,
-        orderId: order.orderId,
+        orderId: order.order_id,
         status: order.status,
-        statusLabel: order.statusLabel,
-        updatedAt: order.updatedAt ?? order.createdAt,
+        statusLabel:
+          STATUS_LABELS[order.status] ??
+          "Статус обновлён",
+        updatedAt: order.created_at,
       },
       {
         headers: {
@@ -84,7 +87,10 @@ export async function GET(request: Request) {
     console.error("Ошибка проверки статуса:", error);
 
     return NextResponse.json(
-      { ok: false, error: "Не удалось проверить статус заказа" },
+      {
+        ok: false,
+        error: "Не удалось проверить статус заказа",
+      },
       { status: 500 }
     );
   }
