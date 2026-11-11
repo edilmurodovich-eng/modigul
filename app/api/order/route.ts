@@ -30,34 +30,95 @@ const STATUS_LABELS: Record<OrderStatus, string> = {
 const money = (value: number) =>
   new Intl.NumberFormat("ru-RU").format(value) + " сум";
 
-async function redisCommand(command: string[]) {
-  const url = process.env.KV_REST_API_URL;
-  const token = process.env.KV_REST_API_TOKEN;
+function getSupabaseConfig() {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!url || !token) {
-    throw new Error("Не настроены KV_REST_API_URL и KV_REST_API_TOKEN");
+  if (!url || !key) {
+    throw new Error("Не настроены переменные Supabase в Vercel");
   }
 
-  const response = await fetch(url, {
+  return { url: url.replace(/\/$/, ""), key };
+}
+
+async function saveOrderToSupabase(order: {
+  orderId: string;
+  trackingToken: string;
+  status: OrderStatus;
+  name: string;
+  phone: string;
+  delivery: string;
+  address: string;
+  comment: string;
+  payment: string;
+  items: {
+    id: ProductId;
+    name: string;
+    price: number;
+    quantity: number;
+    subtotal: number;
+  }[];
+  total: number;
+}) {
+  const { url, key } = getSupabaseConfig();
+
+  const response = await fetch(`${url}/rest/v1/orders`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
+      apikey: key,
+      Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
+      Prefer: "return=minimal",
     },
-    body: JSON.stringify(command),
+    body: JSON.stringify({
+      order_id: order.orderId,
+      tracking_token: order.trackingToken,
+      status: order.status,
+      name: order.name,
+      phone: order.phone,
+      delivery: order.delivery,
+      address: order.address,
+      comment: order.comment,
+      payment: order.payment,
+      items: order.items,
+      total: order.total,
+    }),
     cache: "no-store",
   });
 
-  const result = await response.json();
-
-  if (!response.ok || result.error) {
-    throw new Error("Ошибка сохранения заказа в Redis");
+  if (!response.ok) {
+    const error = await response.text();
+    console.error("Supabase save error:", error);
+    throw new Error("Не удалось сохранить заказ в Supabase");
   }
+}
 
-  return result.result;
+async function deleteOrderFromSupabase(orderId: string) {
+  const { url, key } = getSupabaseConfig();
+
+  const response = await fetch(
+    `${url}/rest/v1/orders?order_id=eq.${encodeURIComponent(orderId)}`,
+    {
+      method: "DELETE",
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    console.error(
+      "Supabase delete error:",
+      await response.text()
+    );
+  }
 }
 
 export async function POST(request: Request) {
+  let savedOrderId: string | null = null;
+
   try {
     const body = await request.json();
 
@@ -190,14 +251,9 @@ export async function POST(request: Request) {
       total,
     };
 
-    // Храним заказ 30 дней.
-    await redisCommand([
-      "SET",
-      `bakery:order:${orderId}`,
-      JSON.stringify(order),
-      "EX",
-      "2592000",
-    ]);
+    // Сохраняем заказ в Supabase.
+    await saveOrderToSupabase(order);
+    savedOrderId = orderId;
 
     const lines = normalizedItems.map(
       (item) =>
@@ -235,6 +291,9 @@ export async function POST(request: Request) {
 
     if (!botToken || !chatId) {
       console.error("Не настроены переменные Telegram в Vercel");
+
+      await deleteOrderFromSupabase(orderId);
+      savedOrderId = null;
 
       return NextResponse.json(
         {
@@ -287,12 +346,8 @@ export async function POST(request: Request) {
     if (!telegramResponse.ok || !telegramResult.ok) {
       console.error("Ошибка отправки в Telegram:", telegramResult);
 
-      // Удаляем сохранённый заказ, если Telegram не принял сообщение.
-      try {
-        await redisCommand(["DEL", `bakery:order:${orderId}`]);
-      } catch {
-        console.error("Не удалось удалить неотправленный заказ");
-      }
+      await deleteOrderFromSupabase(orderId);
+      savedOrderId = null;
 
       return NextResponse.json(
         {
@@ -312,9 +367,12 @@ export async function POST(request: Request) {
       status,
       statusLabel: STATUS_LABELS[status],
     });
-  
   } catch (error) {
     console.error("Ошибка обработки заказа:", error);
+
+    if (savedOrderId) {
+      await deleteOrderFromSupabase(savedOrderId);
+    }
 
     return NextResponse.json(
       {
