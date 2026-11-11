@@ -1,5 +1,4 @@
 
-
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +25,13 @@ export async function GET(request: Request) {
     );
   }
 
+  if (!["set", "info"].includes(action)) {
+    return NextResponse.json(
+      { ok: false, error: "Неизвестное действие" },
+      { status: 400 }
+    );
+  }
+
   try {
     const method =
       action === "info" ? "getWebhookInfo" : "setWebhook";
@@ -34,7 +40,7 @@ export async function GET(request: Request) {
       action === "info"
         ? undefined
         : JSON.stringify({
-            url: "https://qulupnayuz.vercel.app/api/telegram-webhook",
+            url: "https://modigul.vercel.app/api/telegram-webhook",
             secret_token: secret,
             allowed_updates: ["callback_query"],
           });
@@ -52,6 +58,8 @@ export async function GET(request: Request) {
     const result = await response.json();
 
     if (!result.ok) {
+      console.error("Telegram webhook error:", result);
+
       return NextResponse.json(
         { ok: false, error: "Telegram отклонил запрос" },
         { status: 502 }
@@ -75,7 +83,9 @@ export async function GET(request: Request) {
       ok: true,
       description: result.description ?? "Webhook настроен",
     });
-  } catch {
+  } catch (error) {
+    console.error("Ошибка настройки Telegram webhook:", error);
+
     return NextResponse.json(
       { ok: false, error: "Не удалось связаться с Telegram" },
       { status: 502 }
