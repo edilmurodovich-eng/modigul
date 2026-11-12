@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Language = "ru" | "uz";
-type ProductId = 1 | 2 | 3 | 4 | 5;
+type ProductId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 type Delivery = "delivery" | "pickup";
 type Payment = "cash" | "card" | "transfer";
 
@@ -31,17 +31,17 @@ type TrackedOrder = {
 const products: Product[] = [
   {
     id: 1,
+    name: "Матильда",
+    description: "Нежный шоколадный десерт",
+    price: 80000,
+    image: "/products/Матильда.png",
+  },
+  {
+    id: 2,
     name: "Nutella",
     description: "Нежный десерт с шоколадно-ореховым вкусом",
     price: 220000,
     image: "/products/Nutella.jpg",
-  },
-  {
-    id: 2,
-    name: "Chocoberry",
-    description: "Яркое сочетание шоколада и клубники",
-    price: 1500000,
-    image: "/products/Chocoberry.jpg",
   },
   {
     id: 3,
@@ -52,17 +52,45 @@ const products: Product[] = [
   },
   {
     id: 4,
+    name: "Банан в шоколаде",
+    description: "Сочный банан в нежном шоколаде",
+    price: 400000,
+    image: "/products/Банан в шоколаде.jpg",
+  },
+  {
+    id: 5,
     name: "Блинный торт",
     description: "Нежный торт из тонких блинчиков",
     price: 300000,
     image: "/products/Блинный торт.jpg",
   },
   {
-    id: 5,
-    name: "Банан в шоколаде",
-    description: "Сочный банан в нежном шоколаде",
-    price: 400000,
-    image: "/products/Банан в шоколаде.jpg",
+    id: 6,
+    name: "Chocoberry",
+    description: "Яркое сочетание шоколада и клубники",
+    price: 270000,
+    image: "/products/Chocoberry.jpg",
+  },
+  {
+    id: 7,
+    name: "Chokoberry (любовь)",
+    description: "Шоколадный десерт с клубникой",
+    price: 550000,
+    image: "/products/Chocoberry 2 (любовь).jpg",
+  },
+  {
+    id: 8,
+    name: "Chokoberry (Маме)",
+    description: "Особенный десерт для мамы",
+    price: 1450000,
+    image: "/products/Chocoberry (маме).jpg",
+  },
+  {
+    id: 9,
+    name: "Chokoberry (Сестре)",
+    description: "Особенный десерт для сестры",
+    price: 1500000,
+    image: "/products/Chocoberry (сестре).jpg",
   },
 ];
 const translations = {
@@ -254,6 +282,22 @@ const productTranslations = {
       name: "Банан в шоколаде",
       description: "Сочный банан в нежном шоколаде",
     },
+    6: {
+  name: "Chocoberry",
+  description: "Яркое сочетание шоколада и клубники",
+},
+7: {
+  name: "Chokoberry (любовь)",
+  description: "Шоколадный десерт с клубникой",
+},
+8: {
+  name: "Chokoberry (Маме)",
+  description: "Особенный десерт для мамы",
+},
+9: {
+  name: "Chokoberry (Сестре)",
+  description: "Особенный десерт для сестры",
+},
   },
   uz: {
     1: {
@@ -276,6 +320,22 @@ const productTranslations = {
       name: "Shokoladdagi banan",
       description: "Nafis shokolad bilan qoplangan mazali banan",
     },
+    6: {
+  name: "Chocoberry",
+  description: "Shokolad va qulupnayning ajoyib uyg‘unligi",
+},
+7: {
+  name: "Chokoberry (sevgi)",
+  description: "Shokolad va qulupnayli shirinlik",
+},
+8: {
+  name: "Chokoberry (Onamga)",
+  description: "Onajon uchun maxsus shirinlik",
+},
+9: {
+  name: "Chokoberry (Singlimga)",
+  description: "Singil uchun maxsus shirinlik",
+},
   },
 };
 
