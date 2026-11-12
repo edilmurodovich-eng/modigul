@@ -343,7 +343,7 @@ export default function Home() {
   const [noticeError, setNoticeError] = useState(false);
   const [trackedOrder, setTrackedOrder] = useState<TrackedOrder | null>(null);
   const [trackingError, setTrackingError] = useState("");
-
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const t = translations[language];
 
   useEffect(() => {
@@ -737,7 +737,13 @@ try {
             return (
               <article className="product-card" key={product.id}>
                 <div className="product-image">
-                  <img src={product.image} alt={product.name} loading="lazy" />
+                 <img
+  src={product.image}
+  alt={product.name}
+  loading="lazy"
+  onClick={() => setPreviewImage(product.image)}
+  style={{ cursor: "zoom-in" }}
+/>
                   <span className="product-number">
                     {String(product.id).padStart(2, "0")}
                   </span>
@@ -1108,6 +1114,26 @@ try {
 
   <p className="footer-owner">Mohijamol Akmaljonovna</p>
 </footer>
+      {previewImage && (
+  <div
+    className="image-preview-overlay"
+    onClick={() => setPreviewImage(null)}
+  >
+    <button
+      className="image-preview-close"
+      onClick={() => setPreviewImage(null)}
+      aria-label="Закрыть"
+    >
+      ×
+    </button>
+
+    <img
+      src={previewImage}
+      alt="Увеличенное фото десерта"
+      onClick={(e) => e.stopPropagation()}
+    />
+  </div>
+)}
     </main>
   );
 }
