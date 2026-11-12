@@ -364,7 +364,25 @@ export default function Home() {
       // Til tanlovi joriy sessiyada ishlashda davom etadi.
     }
   }, [language, languageReady]);
+  useEffect(() => {
+    try {
+      const savedOrder = localStorage.getItem("modigul-tracked-order");
+      if (!savedOrder) return;
 
+      const parsed = JSON.parse(savedOrder) as TrackedOrder;
+
+      if (
+        typeof parsed.orderId === "string" &&
+        typeof parsed.trackingToken === "string" &&
+        typeof parsed.status === "string" &&
+        typeof parsed.statusLabel === "string"
+      ) {
+        setTrackedOrder(parsed);
+      }
+    } catch {
+      localStorage.removeItem("modigul-tracked-order");
+    }
+  }, []);
   const localizedProducts = useMemo(
     () =>
       products.map((product) => ({
@@ -416,14 +434,26 @@ export default function Home() {
 
         if (active) {
           setTrackedOrder((current) => {
-            if (!current || current.orderId !== data.orderId) return current;
-            return {
-              ...current,
-              status: data.status,
-              statusLabel:
-                statusLabels[language][data.status] || t.statusUpdated,
-            };
-          });
+  if (!current || current.orderId !== data.orderId) return current;
+
+  const updatedOrder = {
+    ...current,
+    status: data.status,
+    statusLabel:
+      statusLabels[language][data.status] || t.statusUpdated,
+  };
+
+  try {
+    localStorage.setItem(
+      "modigul-tracked-order",
+      JSON.stringify(updatedOrder)
+    );
+  } catch {
+    // Saqlash mavjud bo‘lmasa ham kuzatish davom etadi.
+  }
+
+  return updatedOrder;
+});
           setTrackingError("");
         }
       } catch {
@@ -549,12 +579,23 @@ export default function Home() {
         throw new Error(t.trackingMissing);
       }
 
-      setTrackedOrder({
-        orderId: data.orderId,
-        trackingToken: data.trackingToken,
-        status: data.status ?? "new",
-        statusLabel: statusLabels[language][data.status ?? "new"] || t.new,
-      });
+      const newTrackedOrder: TrackedOrder = {
+  orderId: data.orderId,
+  trackingToken: data.trackingToken,
+  status: data.status ?? "new",
+  statusLabel: statusLabels[language][data.status ?? "new"] || t.new,
+};
+
+setTrackedOrder(newTrackedOrder);
+
+try {
+  localStorage.setItem(
+    "modigul-tracked-order",
+    JSON.stringify(newTrackedOrder)
+  );
+} catch {
+  // Buyurtmani kuzatish joriy sessiyada davom etadi.
+}
 
       setNotice(t.orderSent);
       setNoticeError(false);
