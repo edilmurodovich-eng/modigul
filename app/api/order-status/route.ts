@@ -37,7 +37,7 @@ export async function GET(request: Request) {
     }
 
     const response = await fetch(
-      `${url.replace(/\/$/, "")}/rest/v1/orders?order_id=eq.${encodeURIComponent(orderId)}&tracking_token=eq.${encodeURIComponent(trackingToken)}&select=order_id,status,created_at`,
+      `${url.replace(/\/$/, "")}/rest/v1/orders?order_id=eq.${encodeURIComponent(orderId)}&tracking_token=eq.${encodeURIComponent(trackingToken)}&select=order_id,status`,
       {
         method: "GET",
         headers: {
@@ -75,7 +75,6 @@ export async function GET(request: Request) {
         statusLabel:
           STATUS_LABELS[order.status] ??
           "Статус обновлён",
-        updatedAt: order.created_at,
       },
       {
         headers: {
