@@ -263,82 +263,81 @@ const translations = {
 const productTranslations = {
   ru: {
     1: {
-      name: "Nutella",
-      description: "Нежный десерт с шоколадно-ореховым вкусом",
+      name: "Матильда",
+      description: "Нежный шоколадный десерт",
     },
     2: {
-      name: "Chocoberry",
-      description: "Яркое сочетание шоколада и клубники",
+      name: "Nutella",
+      description: "Нежный десерт с шоколадно-ореховым вкусом",
     },
     3: {
       name: "Милка",
       description: "Нежный молочный шоколадный десерт",
     },
     4: {
-      name: "Блинный торт",
-      description: "Нежный торт из тонких блинчиков",
-    },
-    5: {
       name: "Банан в шоколаде",
       description: "Сочный банан в нежном шоколаде",
     },
+    5: {
+      name: "Блинный торт",
+      description: "Нежный торт из тонких блинчиков",
+    },
     6: {
-  name: "Chocoberry",
-  description: "Яркое сочетание шоколада и клубники",
-},
-7: {
-  name: "Chokoberry (любовь)",
-  description: "Шоколадный десерт с клубникой",
-},
-8: {
-  name: "Chokoberry (Маме)",
-  description: "Особенный десерт для мамы",
-},
-9: {
-  name: "Chokoberry (Сестре)",
-  description: "Особенный десерт для сестры",
-},
+      name: "Chocoberry",
+      description: "Яркое сочетание шоколада и клубники",
+    },
+    7: {
+      name: "Chokoberry (любовь)",
+      description: "Шоколадный десерт с клубникой",
+    },
+    8: {
+      name: "Chokoberry (Маме)",
+      description: "Особенный десерт для мамы",
+    },
+    9: {
+      name: "Chokoberry (Сестре)",
+      description: "Особенный десерт для сестры",
+    },
   },
   uz: {
     1: {
-      name: "Nutella",
-      description: "Shokolad va yong‘oq ta’miga ega nafis shirinlik",
+      name: "Matilda",
+      description: "Nozik shokoladli shirinlik",
     },
     2: {
-      name: "Chocoberry",
-      description: "Shokolad va qulupnayning ajoyib uyg‘unligi",
+      name: "Nutella",
+      description: "Shokolad va yong‘oq ta’miga ega nafis shirinlik",
     },
     3: {
       name: "Milka",
       description: "Nafis sutli shokoladli shirinlik",
     },
     4: {
-      name: "Blinli tort",
-      description: "Yupqa blinchiklardan tayyorlangan nafis tort",
-    },
-    5: {
       name: "Shokoladdagi banan",
       description: "Nafis shokolad bilan qoplangan mazali banan",
     },
+    5: {
+      name: "Blinli tort",
+      description: "Yupqa blinchiklardan tayyorlangan nafis tort",
+    },
     6: {
-  name: "Chocoberry",
-  description: "Shokolad va qulupnayning ajoyib uyg‘unligi",
-},
-7: {
-  name: "Chokoberry (sevgi)",
-  description: "Shokolad va qulupnayli shirinlik",
-},
-8: {
-  name: "Chokoberry (Onamga)",
-  description: "Onajon uchun maxsus shirinlik",
-},
-9: {
-  name: "Chokoberry (Singlimga)",
-  description: "Singil uchun maxsus shirinlik",
-},
+      name: "Chocoberry",
+      description: "Shokolad va qulupnayning ajoyib uyg‘unligi",
+    },
+    7: {
+      name: "Chokoberry (sevgi)",
+      description: "Shokolad va qulupnayli shirinlik",
+    },
+    8: {
+      name: "Chokoberry (Onamga)",
+      description: "Onajon uchun maxsus shirinlik",
+    },
+    9: {
+      name: "Chokoberry (Singlimga)",
+      description: "Singil uchun maxsus shirinlik",
+    },
   },
 };
-
 const statusLabels: Record<Language, Record<string, string>> = {
   ru: {
     new: "Ожидает подтверждения",
