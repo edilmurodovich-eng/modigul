@@ -3,11 +3,15 @@ import { NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
 
 const PRODUCTS = {
-  1: { name: "Nutella", price: 220000 },
-  2: { name: "Chocoberry", price: 1500000 },
+  1: { name: "Матильда", price: 80000 },
+  2: { name: "Nutella", price: 220000 },
   3: { name: "Милка", price: 500000 },
-  4: { name: "Блинный торт", price: 300000 },
-  5: { name: "Банан в шоколаде", price: 400000 },
+  4: { name: "Банан в шоколаде", price: 400000 },
+  5: { name: "Блинный торт", price: 300000 },
+  6: { name: "Chocoberry", price: 270000 },
+  7: { name: "Chokoberry (любовь)", price: 550000 },
+  8: { name: "Chokoberry (Маме)", price: 1450000 },
+  9: { name: "Chokoberry (Сестре)", price: 1500000 },
 };
 
 type ProductId = keyof typeof PRODUCTS;
