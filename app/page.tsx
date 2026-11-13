@@ -1058,11 +1058,6 @@ try {
                   description: t.cashDescription,
                 },
                 {
-                  id: "card" as Payment,
-                  title: t.card,
-                  description: t.cardDescription,
-                },
-                {
                   id: "transfer" as Payment,
                   title: t.transfer,
                   description: t.transferDescription,
