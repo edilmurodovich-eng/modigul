@@ -1129,13 +1129,28 @@ try {
                     <p>Xakimova Mohijamol</p>
                   </div>
                   <button
-                    type="button"
-                    onClick={() =>
-                      navigator.clipboard.writeText("4916990321146737")
-                    }
-                  >
-                    Копировать
-                  </button>
+  type="button"
+  className="copy-button"
+  aria-label="Скопировать номер VISA"
+  title="Скопировать"
+  onClick={() =>
+    navigator.clipboard.writeText("4916990321146737")
+  }
+>
+  <svg
+    viewBox="0 0 24 24"
+    width="20"
+    height="20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect x="8" y="8" width="13" height="13" rx="2" />
+    <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
+  </svg>
+</button>
                 </div>
               </div>
             )}
