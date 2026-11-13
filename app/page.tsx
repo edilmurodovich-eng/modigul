@@ -1087,6 +1087,43 @@ try {
                 </label>
               ))}
             </div>
+                        {payment === "transfer" && (
+              <div className="payment-card-details">
+                <p>Переведите сумму заказа на одну из карт:</p>
+
+                <div className="payment-card-row">
+                  <strong className="payment-card-brand">HUMO</strong>
+                  <div>
+                    <strong>9860 3501 4905 9916</strong>
+                    <p>Hakimova Mohijamol</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      navigator.clipboard.writeText("9860350149059916")
+                    }
+                  >
+                    Копировать
+                  </button>
+                </div>
+
+                <div className="payment-card-row">
+                  <strong className="payment-card-brand">VISA</strong>
+                  <div>
+                    <strong>4916 9903 2114 6737</strong>
+                    <p>Xakimova Mohijamol</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      navigator.clipboard.writeText("4916990321146737")
+                    }
+                  >
+                    Копировать
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="checkout-total">
