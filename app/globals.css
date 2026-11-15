@@ -2026,3 +2026,36 @@ textarea:focus-visible {
     margin-left: auto;
   }
 }
+.payment-card-logo {
+  width: 65px;
+  height: 42px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
+
+.copy-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  border-radius: 9px;
+  background: #222;
+  color: #fff;
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 480px) {
+  .payment-card-logo {
+    width: 55px;
+    height: 36px;
+  }
+}
