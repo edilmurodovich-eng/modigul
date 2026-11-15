@@ -144,9 +144,14 @@ export async function POST(request: Request) {
     const messageChatId = message?.chat?.id;
 
     if (
-      !message ||
-      String(messageChatId) !== String(configuredChatId)
-    ) {
+  !message ||
+  ![
+    configuredChatId,
+    process.env.TELEGRAM_ADMIN_CHAT_ID,
+  ]
+    .filter(Boolean)
+    .some((id) => String(messageChatId) === String(id))
+) {
       console.warn("Нажатие кнопки вне чата управления заказами");
       return NextResponse.json({ ok: true });
     }
