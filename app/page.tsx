@@ -1099,7 +1099,7 @@ try {
 />
                   <div>
                     <strong>9860 3501 4905 9916</strong>
-                    <p>Hakimova Mohijamol</p>
+                    <p>MOKHIJAMOL KHAKIMOVA</p>
                   </div>
                   <button
   type="button"
@@ -1134,7 +1134,7 @@ try {
 />
                   <div>
                     <strong>4916 9903 2114 6737</strong>
-                    <p>Xakimova Mohijamol</p>
+                    <p>XAKIMOVA MOHIJAMOL</p>
                   </div>
                   <button
   type="button"
