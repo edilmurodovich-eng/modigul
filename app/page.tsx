@@ -150,6 +150,7 @@ const translations = {
     cardDescription: "Оплата картой при получении заказа",
     transfer: "Перевод на карту (предоплата)",
     transferDescription: "Оплата заказа заранее",
+    transferInstruction: "Переведите сумму заказа на одну из карт:",
     toPay: "К оплате",
     sending: "Отправляем заказ...",
     submit: "Оформить заказ",
@@ -231,6 +232,7 @@ const translations = {
     cardDescription: "Buyurtmani olganda karta orqali to‘lov",
     transfer: "Kartaga pul o‘tkazish",
     transferDescription: "To‘lov uchun karta rekvizitlari orqali o‘tkazma",
+    transferInstruction: "Buyurtma summasini quyidagi kartalardan biriga o‘tkazing:",
     toPay: "To‘lanadi",
     sending: "Buyurtma yuborilmoqda...",
     submit: "Buyurtma berish",
@@ -1089,7 +1091,7 @@ try {
             </div>
                         {payment === "transfer" && (
               <div className="payment-card-details">
-                <p>Переведите сумму заказа на одну из карт:</p>
+                <p>{t.transferInstruction}</p>
 
                 <div className="payment-card-row">
                   <img
