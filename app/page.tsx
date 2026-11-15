@@ -174,92 +174,102 @@ const translations = {
     preparing: "Готовится",
     courier: "Передан курьеру",
     delivered: "Доставлен",
+    decreaseQuantity: "Уменьшить количество",
+    increaseQuantity: "Увеличить количество",
+    copyCard: "Скопировать номер карты",
+    close: "Закрыть",
     language: "Язык сайта",
+    enlargedDessertPhoto: "Увеличенное фото десерта",
   },
   uz: {
-    home: "Bosh sahifa",
-    catalog: "Mahsulotlar",
-    order: "Buyurtma",
-    cart: "Savat",
-    eyebrow: "YANGI PISHIRILGAN · MEHR BILAN",
-    hero1: "Kuningizga",
-    hero2: "o‘zgacha ta’m",
-    hero3: "bag‘ishlaymiz",
-    heroDescription:
-      "Siz va yaqinlaringiz uchun uy pishiriqlari, nafis shirinliklar va yoqimli lahzalar.",
-    chooseDessert: "Shirinlik tanlash",
-    fresh: "Yangi pishiriqlar",
-    freshDescription: "Sifatga e’tibor bilan tayyorlaymiz",
-    love: "Mehr bilan",
-    loveDescription: "Har bir detalga e’tibor",
-    convenient: "Qulay buyurtma",
-    convenientDescription: "Yetkazib berish yoki olib ketish",
-    collection: "BIZNING TO‘PLAM",
-    chooseSweet: "Shirinligingizni tanlang",
-    collectionDescription:
-      "Yoqimli kun yoki alohida bayram uchun sevimli shirinligingizni tanlang.",
-    dessertCount: "ta shirinlik",
-    addToCart: "Qo‘shish",
-    cartTitle: "Savatingiz",
-    pieces: "dona",
-    emptyCart: "Savatingiz hozircha bo‘sh. Katalogdan shirinlik tanlang.",
-    total: "Jami",
-    orderEyebrow: "SIZNING SHIRIN BUYURTMANGIZ",
-    orderTitle: "Mazali lahzalar siz uchun",
-    orderDescription:
-      "Ma’lumotlaringizni kiriting, yetkazib berish va to‘lov usulini tanlang. Buyurtmani tasdiqlash uchun siz bilan bog‘lanamiz.",
-    contact: "Aloqa ma’lumotlari",
-    contactDescription: "Siz bilan qanday bog‘lanamiz?",
-    yourName: "Ismingiz",
-    namePlaceholder: "Ismingizni kiriting",
-    phone: "Telefon raqami",
-    deliveryMethod: "Qabul qilish usuli",
-    deliveryDescription: "Qaysi usul sizga qulay?",
-    delivery: "Yetkazib berish",
-    deliveryDetails: "Ko‘rsatilgan manzilga",
-    pickup: "O‘zingiz olib ketasiz",
-    pickupDetails: "Buyurtmani o‘zingiz olib ketasiz",
-    address: "Yetkazib berish manzili",
-    addressPlaceholder: "Ko‘cha, uy, xonadon",
-    comment: "Buyurtma uchun izoh",
-    optional: "Ixtiyoriy",
-    commentPlaceholder: "Buyurtma bo‘yicha istaklaringiz...",
-    paymentMethod: "To‘lov usuli",
-    paymentDescription: "O‘zingizga qulay usulni tanlang",
-    cash: "Naqd pul",
-    cashDescription: "Buyurtmani olganda naqd to‘lov",
-    card: "Karta orqali",
-    cardDescription: "Buyurtmani olganda karta orqali to‘lov",
-    transfer: "Kartaga pul o‘tkazish",
-    transferDescription: "To‘lov uchun karta rekvizitlari orqali o‘tkazma",
-    transferInstruction: "Buyurtma summasini quyidagi kartalardan biriga o‘tkazing:",
-    toPay: "To‘lanadi",
-    sending: "Buyurtma yuborilmoqda...",
-    submit: "Buyurtma berish",
-    footnote:
-      "Tugmani bosish orqali buyurtmani rasmiylashtirish uchun ma’lumotlarni yuborasiz.",
-    tracking: "Buyurtmangiz holati",
-    currentStatus: "Joriy holati:",
-    deliveredThanks:
-      "Buyurtmangiz uchun rahmat! Sizni yana kutib qolamiz.",
-    trackingError:
-      "Holatni yangilab bo‘lmadi. 5 soniyadan so‘ng qayta tekshiriladi.",
-    addProducts: "Avval savatga mahsulot qo‘shing.",
-    invalidPhone: "+998 formatida to‘liq telefon raqamini kiriting.",
-    enterAddress: "Yetkazib berish manzilini kiriting.",
-    sendError: "Buyurtmani yuborib bo‘lmadi. Qayta urinib ko‘ring.",
-    trackingMissing:
-      "Buyurtma yuborildi, lekin kuzatish ma’lumotlari olinmadi. Holatni aniqlash uchun biz bilan bog‘laning.",
-    orderSent:
-      "Buyurtma yuborildi! Quyida uning holatini kuzatishingiz mumkin.",
-    statusUpdated: "Holat yangilandi",
-    new: "Tasdiqlanishi kutilmoqda",
-    accepted: "Buyurtma qabul qilindi",
-    preparing: "Tayyorlanmoqda",
-    courier: "Kuryerga topshirildi",
-    delivered: "Yetkazib berildi",
-    language: "Sayt tili",
-  },
+  home: "Bosh sahifa",
+  catalog: "Mahsulotlar",
+  order: "Buyurtma",
+  cart: "Savat",
+  eyebrow: "YANGI PIŞIRILGAN · MEHR BILAN",
+  hero1: "Kuningizga",
+  hero2: "özgaça ta’m",
+  hero3: "bağişlaymiz",
+  heroDescription:
+    "Siz va yaqinlaringiz uçun uy pişiriqlari, nafis şirinliklar va yoqimli lahzalar.",
+  chooseDessert: "Şirinlik tanlaş",
+  fresh: "Yangi pişiriqlar",
+  freshDescription: "Sifatga e’tibor bilan tayyorlaymiz",
+  love: "Mehr bilan",
+  loveDescription: "Har bir detalga e’tibor",
+  convenient: "Qulay buyurtma",
+  convenientDescription: "Yetkazib beriş yoki olib ketiş",
+  collection: "BIZNING TÖPLAM",
+  chooseSweet: "Şirinligingizni tanlang",
+  collectionDescription:
+    "Yoqimli kun yoki alohida bayram uçun sevimli şirinligingizni tanlang.",
+  dessertCount: "ta şirinlik",
+  addToCart: "Qöşiş",
+  cartTitle: "Savatingiz",
+  pieces: "dona",
+  emptyCart: "Savatingiz hozirça böş. Katalogdan şirinlik tanlang.",
+  total: "Jami",
+  orderEyebrow: "SIZNING ŞIRIN BUYURTMANGIZ",
+  orderTitle: "Mazali lahzalar siz uçun",
+  orderDescription:
+    "Ma’lumotlaringizni kiriting, yetkazib beriş va tölov usulini tanlang. Buyurtmani tasdiqlash uçun siz bilan bog‘lanamiz.",
+  contact: "Aloqa ma’lumotlari",
+  contactDescription: "Siz bilan qanday bog‘lanamiz?",
+  yourName: "Ismingiz",
+  namePlaceholder: "Ismingizni kiriting",
+  phone: "Telefon raqami",
+  deliveryMethod: "Qabul qilish usuli",
+  deliveryDescription: "Qaysi usul sizga qulay?",
+  delivery: "Yetkazib beriş",
+  deliveryDetails: "Körsatilgan manzilga",
+  pickup: "Özingiz olib ketasiz",
+  pickupDetails: "Buyurtmani özingiz olib ketasiz",
+  address: "Yetkazib beriş manzili",
+  addressPlaceholder: "Köça, uy, xonadon",
+  comment: "Buyurtma uçun izoh",
+  optional: "Ixtiyoriy",
+  commentPlaceholder: "Buyurtma böyiça istaklaringiz...",
+  paymentMethod: "Tölov usuli",
+  paymentDescription: "Özingizga qulay usulni tanlang",
+  cash: "Naqd pul",
+  cashDescription: "Buyurtmani olganda naqd tölov",
+  card: "Karta orqali",
+  cardDescription: "Buyurtmani olganda karta orqali tölov",
+  transfer: "Kartaga pul ötkaziş",
+  transferDescription: "Tölov uçun karta rekvizitlari orqali ötkazma",
+  transferInstruction: "Buyurtma summasini quyidagi kartalardan biriga ötkazing:",
+  toPay: "Tölanadi",
+  sending: "Buyurtma yuborilmoqda...",
+  submit: "Buyurtma beriş",
+  footnote:
+    "Tugmani bosiş orqali buyurtmani rasmiylaş­tiriş uçun ma’lumotlarni yuborasiz.",
+  tracking: "Buyurtmangiz holati",
+  currentStatus: "Joriy holati:",
+  deliveredThanks:
+    "Buyurtmangiz uçun rahmat! Sizni yana kutib qolamiz.",
+  trackingError:
+    "Holatni yangilab bö‘lmadi. 5 soniyadan söng qayta tekşiriladi.",
+  addProducts: "Avval savatga mahsulot qöşing.",
+  invalidPhone: "+998 formatida töl­iq telefon raqamini kiriting.",
+  enterAddress: "Yetkazib beriş manzilini kiriting.",
+  sendError: "Buyurtmani yuborib bö‘lmadi. Qayta urinib köring.",
+  trackingMissing:
+    "Buyurtma yuborildi, lekin kuzatiş ma’lumotlari olinmadi. Holatni aniqlash uçun biz bilan bog‘laning.",
+  orderSent:
+    "Buyurtma yuborildi! Quyida uning holatini kuzatişingiz mumkin.",
+  statusUpdated: "Holat yangilandi",
+  new: "Tasdiqlanişi kutilmoqda",
+  accepted: "Buyurtma qabul qilindi",
+  preparing: "Tayyorlanmoqda",
+  courier: "Kuryerga topşirildi",
+  delivered: "Yetkazib berildi",
+  decreaseQuantity: "Kamaytirish",
+  increaseQuantity: "Köp aytiriş",
+  copyCard: "Karta raqamidan nusxa oliş",
+  close: "Yopiş",
+  language: "Sayt tili",
+  enlargedDessertPhoto: "Kattalashtirilgan desert fotosi",
+},
 } as const;
 
 const productTranslations = {
@@ -302,43 +312,43 @@ const productTranslations = {
     },
   },
   uz: {
-    1: {
-      name: "Matilda",
-      description: "Nozik shokoladli shirinlik",
-    },
-    2: {
-      name: "Nutella",
-      description: "Shokolad va yong‘oq ta’miga ega nafis shirinlik",
-    },
-    3: {
-      name: "Milka",
-      description: "Nafis sutli shokoladli shirinlik",
-    },
-    4: {
-      name: "Shokoladdagi banan",
-      description: "Nafis shokolad bilan qoplangan mazali banan",
-    },
-    5: {
-      name: "Blinli tort",
-      description: "Yupqa blinchiklardan tayyorlangan nafis tort",
-    },
-    6: {
-      name: "Chocoberry",
-      description: "Shokolad va qulupnayning ajoyib uyg‘unligi",
-    },
-    7: {
-      name: "Chokoberry (sevgi)",
-      description: "Shokolad va qulupnayli shirinlik",
-    },
-    8: {
-      name: "Chokoberry (Onamga)",
-      description: "Onajon uchun maxsus shirinlik",
-    },
-    9: {
-      name: "Chokoberry (Singlimga)",
-      description: "Singil uchun maxsus shirinlik",
-    },
+  1: {
+    name: "Matilda",
+    description: "Nozik şokoladli şirinlik",
   },
+  2: {
+    name: "Nutella",
+    description: "Şokolad va yong‘oq ta’miga ega nafis şirinlik",
+  },
+  3: {
+    name: "Milka",
+    description: "Nafis sutli şokoladli şirinlik",
+  },
+  4: {
+    name: "Şokoladdagi banan",
+    description: "Nafis şokolad bilan qoplangan mazali banan",
+  },
+  5: {
+    name: "Blinli tort",
+    description: "Yupqa blinçiklardan tayyorlangan nafis tort",
+  },
+  6: {
+    name: "Çocoberry",
+    description: "Şokolad va qulupnayning ajoyib uyğunligi",
+  },
+  7: {
+    name: "Çokoberry (sevgi)",
+    description: "Şokolad va qulupnayli şirinlik",
+  },
+  8: {
+    name: "Çokoberry (Onamga)",
+    description: "Onajon uçun maxsus şirinlik",
+  },
+  9: {
+    name: "Çokoberry (Singlimga)",
+    description: "Singil uçun maxsus şirinlik",
+  },
+},
 };
 const statusLabels: Record<Language, Record<string, string>> = {
   ru: {
@@ -348,17 +358,18 @@ const statusLabels: Record<Language, Record<string, string>> = {
     courier: "Передан курьеру",
     delivered: "Доставлен",
   },
-  uz: {
-    new: "Tasdiqlanishi kutilmoqda",
-    accepted: "Buyurtma qabul qilindi",
-    preparing: "Tayyorlanmoqda",
-    courier: "Kuryerga topshirildi",
-    delivered: "Yetkazib berildi",
-  },
+ uz: {
+  new: "Tasdiqlanişi kutilmoqda",
+  accepted: "Buyurtma qabul qilindi",
+  preparing: "Tayyorlanmoqda",
+  courier: "Kuryerga topşirildi",
+  delivered: "Yetkazib berildi",
+},
 };
 
 function formatPrice(price: number, language: Language) {
-  return `${price.toLocaleString(language === "ru" ? "ru-RU" : "uz-UZ")} so‘m`;
+  const currency = language === "ru" ? "so‘m" : "söm";
+  return `${price.toLocaleString(language === "ru" ? "ru-RU" : "uz-UZ")} ${currency}`;
 }
 
 function PaymentIcon({ type }: { type: Payment }) {
@@ -709,7 +720,7 @@ try {
               className={`language-button ${language === "uz" ? "active" : ""}`}
               onClick={() => setLanguage("uz")}
               aria-pressed={language === "uz"}
-              aria-label="O‘zbek tili"
+              aria-label="Özbek tili"
             >
               🇺🇿 UZ
             </button>
@@ -835,7 +846,7 @@ try {
                         <button
                           type="button"
                           onClick={() => changeQuantity(product.id, -1)}
-                          aria-label="Уменьшить количество"
+                          aria-label={t.decreaseQuantity}
                         >
                           −
                         </button>
@@ -844,7 +855,7 @@ try {
                           type="button"
                           onClick={() => addToCart(product.id)}
                           disabled={quantity >= 50}
-                          aria-label="Увеличить количество"
+                          aria-label={t.increaseQuantity}
                         >
                           +
                         </button>
@@ -888,7 +899,7 @@ try {
                       <button
                         type="button"
                         onClick={() => changeQuantity(item.id, -1)}
-                        aria-label="Уменьшить количество"
+                        aria-label={t.decreaseQuantity}
                       >
                         −
                       </button>
@@ -897,7 +908,7 @@ try {
                         type="button"
                         onClick={() => addToCart(item.id)}
                         disabled={item.quantity >= 50}
-                        aria-label="Увеличить количество"
+                        aria-label={t.increaseQuantity}
                       >
                         +
                       </button>
@@ -1106,8 +1117,8 @@ try {
                   <button
   type="button"
   className="copy-button"
-  aria-label="Скопировать номер HUMO"
-  title="Скопировать"
+  aria-label={`${t.copyCard} HUMO`}
+  title={t.copyCard}
   onClick={() =>
     navigator.clipboard.writeText("9860350149059916")
   }
@@ -1141,8 +1152,8 @@ try {
                   <button
   type="button"
   className="copy-button"
-  aria-label="Скопировать номер VISA"
-  title="Скопировать"
+  aria-label={`${t.copyCard} VISA`}
+  title={t.copyCard}
   onClick={() =>
     navigator.clipboard.writeText("4916990321146737")
   }
@@ -1253,14 +1264,14 @@ try {
     <button
       className="image-preview-close"
       onClick={() => setPreviewImage(null)}
-      aria-label="Закрыть"
+      aria-label={t.close}
     >
       ×
     </button>
 
     <img
       src={previewImage}
-      alt="Увеличенное фото десерта"
+      alt={t.enlargedDessertPhoto}
       onClick={(e) => e.stopPropagation()}
     />
   </div>
