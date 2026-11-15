@@ -1092,7 +1092,11 @@ try {
                 <p>Переведите сумму заказа на одну из карт:</p>
 
                 <div className="payment-card-row">
-                  <strong className="payment-card-brand">HUMO</strong>
+                  <img
+  src="/humo-logo.png"
+  alt="HUMO"
+  className="payment-card-logo"
+/>
                   <div>
                     <strong>9860 3501 4905 9916</strong>
                     <p>Hakimova Mohijamol</p>
@@ -1123,7 +1127,11 @@ try {
                 </div>
 
                 <div className="payment-card-row">
-                  <strong className="payment-card-brand">VISA</strong>
+                  <img
+  src="/visa-logo.png"
+  alt="VISA"
+  className="payment-card-logo"
+/>
                   <div>
                     <strong>4916 9903 2114 6737</strong>
                     <p>Xakimova Mohijamol</p>
