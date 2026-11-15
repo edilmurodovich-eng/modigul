@@ -288,10 +288,13 @@ export async function POST(request: Request) {
     ].join("\n");
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
-    const chatId =
-      process.env.TELEGRAM_OWNER_CHAT_ID ??
-      process.env.TELEGRAM_OWNER_CHATID ??
-      process.env.TELEGRAM_CHAT_ID;
+
+const chatId =
+  process.env.TELEGRAM_OWNER_CHAT_ID ??
+  process.env.TELEGRAM_OWNER_CHATID ??
+  process.env.TELEGRAM_CHAT_ID;
+
+const adminChatId = process.env.TELEGRAM_ADMIN_CHAT_ID;
 
     if (!botToken || !chatId) {
       console.error("Не настроены переменные Telegram в Vercel");
@@ -308,59 +311,83 @@ export async function POST(request: Request) {
       );
     }
 
-    const telegramResponse = await fetch(
+    const recipients = [
+  ...new Set([chatId, adminChatId].filter(Boolean)),
+];
+
+const inlineKeyboard = [
+  [
+    {
+      text: "✅ Заказ принят",
+      callback_data: `status:${orderId}:accepted`,
+    },
+    {
+      text: "👨‍🍳 Готовится",
+      callback_data: `status:${orderId}:preparing`,
+    },
+  ],
+  [
+    {
+      text: "🛵 Передан курьеру",
+      callback_data: `status:${orderId}:courier`,
+    },
+    {
+      text: "🎉 Доставлен",
+      callback_data: `status:${orderId}:delivered`,
+    },
+  ],
+];
+
+const telegramResults = await Promise.allSettled(
+  recipients.map(async (recipient) => {
+    const response = await fetch(
       `https://api.telegram.org/bot${botToken}/sendMessage`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          chat_id: chatId,
+          chat_id: recipient,
           text: message,
           reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: "✅ Заказ принят",
-                  callback_data: `status:${orderId}:accepted`,
-                },
-                {
-                  text: "👨‍🍳 Готовится",
-                  callback_data: `status:${orderId}:preparing`,
-                },
-              ],
-              [
-                {
-                  text: "🛵 Передан курьеру",
-                  callback_data: `status:${orderId}:courier`,
-                },
-                {
-                  text: "🎉 Доставлен",
-                  callback_data: `status:${orderId}:delivered`,
-                },
-              ],
-            ],
+            inline_keyboard: inlineKeyboard,
           },
         }),
         cache: "no-store",
       }
     );
 
-    const telegramResult = await telegramResponse.json();
+    const result = await response.json();
 
-    if (!telegramResponse.ok || !telegramResult.ok) {
-      console.error("Ошибка отправки в Telegram:", telegramResult);
-
-      await deleteOrderFromSupabase(orderId);
-      savedOrderId = null;
-
-      return NextResponse.json(
-        {
-          ok: false,
-          error: "Не удалось отправить заказ в Telegram",
-        },
-        { status: 502 }
-      );
+    if (!response.ok || !result.ok) {
+      throw new Error(JSON.stringify(result));
     }
+
+    return result;
+  })
+);
+
+const sentCount = telegramResults.filter(
+  (result) => result.status === "fulfilled"
+).length;
+
+telegramResults.forEach((result) => {
+  if (result.status === "rejected") {
+    console.error("Ошибка отправки администратору:", result.reason);
+  }
+});
+
+if (sentCount === 0) {
+  await deleteOrderFromSupabase(orderId);
+  savedOrderId = null;
+
+  return NextResponse.json(
+    {
+      ok: false,
+      error: "Не удалось отправить заказ администраторам",
+    },
+    { status: 502 }
+  );
+}
 
     return NextResponse.json({
       ok: true,
